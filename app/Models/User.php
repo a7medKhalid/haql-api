@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'bio'
     ];
 
     /**
@@ -41,4 +42,33 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    //many to many relationship with specialties
+    public function specialties()
+    {
+        return $this->belongsToMany(Specialty::class, 'user_has_specialties');
+    }
+
+    //has many relationship with projects
+    public function projects()
+    {
+        return $this->hasMany(Project::class, 'owner_id');
+    }
+
+    //has many relationship with contributions
+    public function contributions()
+    {
+        return $this->hasMany(Contribution::class, 'contributor_id');
+    }
+
+    //has many relationship with issues
+    public function issues()
+    {
+        return $this->hasMany(Issue::class, 'user_id');
+    }
+
+
+
+
 }
