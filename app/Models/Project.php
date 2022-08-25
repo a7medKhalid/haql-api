@@ -16,11 +16,6 @@ class Project extends Model
         return $this->belongsTo(User::class, 'owner_id');
     }
 
-    public function description()
-    {
-        return $this->belongsTo(Contribution::class, 'description_id');
-    }
-
     public function issues()
     {
         return $this->hasMany(Issue::class, 'project_id');

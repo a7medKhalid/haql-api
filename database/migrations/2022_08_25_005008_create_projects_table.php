@@ -18,9 +18,9 @@ return new class extends Migration
             $table->timestamps();
 
             $table->string('name');
+            $table->text('description');
 
             $table->foreignId('owner_id')->nullable();
-            $table->foreignId('description_id')->nullable();
          });
     }
 

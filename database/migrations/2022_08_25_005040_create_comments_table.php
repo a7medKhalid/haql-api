@@ -23,7 +23,7 @@ return new class extends Migration
             $table->enum('commentedType', ['comment', 'project']);
             $table->foreignId('commentedId')->nullable();
 
-            $table->foreignId('userId')->nullable();
+            $table->foreignId('user_id')->nullable();
 
         });
     }

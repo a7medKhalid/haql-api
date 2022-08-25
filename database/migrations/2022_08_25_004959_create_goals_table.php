@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('title');
             $table->text('description');
 
+            $table->boolean('isCompleted')->default(false);
+
             $table->foreignId('project_id')->nullable();
         });
     }
