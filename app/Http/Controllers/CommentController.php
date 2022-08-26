@@ -8,13 +8,13 @@ use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
-    public function create(User $user, $title, $body ,$commentedType, $commentedId)
+    public function create(User $user, $title, $body ,$commentedType, $commented_id)
     {
         $comment = new Comment();
         $comment->title = $title;
         $comment->body = $body;
         $comment->commentedType = $commentedType;
-        $comment->commentedId = $commentedId;
+        $comment->commented_id = $commented_id;
         $comment->user_id = $user->id;
         $comment->save();
     }
