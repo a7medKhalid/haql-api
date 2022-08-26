@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\API\ProjectAPIController;
+use App\Http\Controllers\ProjectController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,4 +18,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::group(['prefix' => 'projects'], function () {
+
+    Route::get('/{project_id}', [ProjectAPIController::class, 'getProject'] );
+    Route::post('/', [ProjectAPIController::class, 'createProject'] );
+    Route::put('/', [ProjectAPIController::class, 'updateProject'] );
+    Route::delete('/', [ProjectAPIController::class, 'deleteProject'] );
+
+
 });
