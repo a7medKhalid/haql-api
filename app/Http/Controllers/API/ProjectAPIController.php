@@ -17,13 +17,15 @@ class ProjectAPIController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string|max:255',
+            'license' => 'required|string|max:255',
+            'license_url' => 'required|string|max:255',
         ]);
 
         $user = Auth::user();
 
         $project_controller = new ProjectController;
 
-        $project = $project_controller->create($user, $request->name, $request->description);
+        $project = $project_controller->create($user, $request->name, $request->description, $request->license, $request->license_url);
 
 
 

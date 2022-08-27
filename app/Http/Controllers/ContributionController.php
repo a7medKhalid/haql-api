@@ -9,15 +9,16 @@ use Illuminate\Http\Request;
 
 class ContributionController extends Controller
 {
-    public function create(User $user, Project $project, $title, $description, $link, $license, $license_url)
+    public function create($user, $project_id, $title, $description, $link,)
     {
         $contribution = Contribution::create([
             'title' => $title,
             'description' => $description,
             'link' => $link,
-            'license' => $license,
-            'license_url' => $license_url,
+
         ]);
+
+        $project = Project::find($project_id);
 
         $project->contributions()->save($contribution);
         $user->contributions()->save($contribution);
@@ -25,14 +26,34 @@ class ContributionController extends Controller
         return $contribution;
     }
 
-    public function delete(User $user, Contribution $contribution)
+    public function update($user, $contribution_id, $isAccepted)
+    {
+        $contribution = Contribution::find($contribution_id);
+
+        if ($user->cannot('update', $contribution)) {
+            abort(403, 'You are not authorized to perform this action.');
+        }
+
+        $contribution->update([
+            'isAccepted' => $isAccepted,
+        ]);
+
+        return $contribution;
+
+    }
+
+    public function delete($user, $contribution_id)
     {
 
+        $contribution = Contribution::find($contribution_id);
+
         if ($user->cannot('delete', $contribution)) {
-            abort(403);
+            abort(403, 'You are not authorized to perform this action.');
         }
 
         $contribution->delete();
+
+        return $contribution;
     }
 
 }

@@ -19,6 +19,8 @@ class ProjectFactory extends Factory
         return [
             'name' => $this->faker->name,
             'description' => $this->faker->text,
+            'license' => $this->faker->word,
+            'license_url' => $this->faker->url,
         ];
     }
 }

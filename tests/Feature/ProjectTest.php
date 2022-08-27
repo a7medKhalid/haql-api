@@ -6,13 +6,18 @@ use App\Models\Project;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Tests\MigrateFreshSeedOnce;
 use Tests\TestCase;
 
 class ProjectTest extends TestCase
 {
+    use MigrateFreshSeedOnce;
+
 
     public function testCreateProject()
     {
+
+
         $user = User::factory()->create(['name' => 'projectMaker']);
 
         $this->actingAs($user);
@@ -20,6 +25,8 @@ class ProjectTest extends TestCase
         $response = $this->json('POST', '/api/projects', [
             'name' => 'Test Project',
             'description' => 'Test Description',
+            'license' => 'Test License',
+            'license_url' => 'Test License URL',
         ]);
 
         $response->assertStatus(200);

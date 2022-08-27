@@ -20,8 +20,6 @@ return new class extends Migration
             $table->string('title');
             $table->string('description');
             $table->string('link');
-            $table->string('license');
-            $table->string('license_url');
             $table->boolean('isAccepted')->default(false);
 
             $table->foreignId('contributor_id')->nullable();

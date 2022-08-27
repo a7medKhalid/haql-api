@@ -17,7 +17,12 @@ class ContributionPolicy
             return false;
         }
 
-        return $user->id === $contribution->user_id;
+        return $user->id === $contribution->contributor_id;
+    }
+
+    public function update(User $user, Contribution $contribution)
+    {
+        return $user->id === $contribution->project->owner_id;
     }
 
 }

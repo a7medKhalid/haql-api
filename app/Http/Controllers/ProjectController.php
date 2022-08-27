@@ -11,11 +11,13 @@ use Illuminate\Support\Facades\Auth;
 class ProjectController extends Controller
 {
 
-    public function create($user, $name, $description){
+    public function create($user, $name, $description,$licnse,$licnse_url){
 
         $project = Project::create([
             'name' => $name,
             'description' => $description,
+            'license' => $licnse,
+            'license_url' => $licnse_url,
         ]);
 
         $user->projects()->save($project);
