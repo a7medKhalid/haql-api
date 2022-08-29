@@ -1,10 +1,10 @@
 <?php
 
 use App\Http\Controllers\API\ContributionsAPIController;
+use App\Http\Controllers\API\IssueAPIController;
 use App\Http\Controllers\API\ProjectAPIController;
-use App\Http\Controllers\ProjectController;
+
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,7 +26,6 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 
 Route::group(['prefix' => 'projects'], function () {
 
-    Route::get('/{project_id}', [ProjectAPIController::class, 'getProject'] );
     Route::post('/', [ProjectAPIController::class, 'createProject'] )->middleware('auth');
     Route::put('/', [ProjectAPIController::class, 'updateProject'] )->middleware('auth');
     Route::delete('/', [ProjectAPIController::class, 'deleteProject'] )->middleware('auth');
@@ -34,8 +33,15 @@ Route::group(['prefix' => 'projects'], function () {
 });
 
 Route::group(['prefix' => 'contributions'], function () {
-    Route::get('/{contribution_id}', [ContributionsAPIController::class, 'getContribution'] );
     Route::post('/', [ContributionsAPIController::class, 'createContribution'] )->middleware('auth');
     Route::put('/', [ContributionsAPIController::class, 'updateContribution'] )->middleware('auth');
     Route::delete('/', [ContributionsAPIController::class, 'deleteContribution'] )->middleware('auth');
 });
+
+
+Route::group(['prefix' => 'issues'], function () {
+    Route::post('/', [IssueAPIController::class, 'createIssue'] )->middleware('auth');
+    Route::put('/', [IssueAPIController::class, 'updateIssue'] )->middleware('auth');
+});
+
+//Route::group(['prefix' => 'commentes'])

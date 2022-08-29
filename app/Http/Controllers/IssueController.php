@@ -9,8 +9,12 @@ use Illuminate\Http\Request;
 
 class IssueController extends Controller
 {
-    public function create(User $user, Project $project, $title, $description)
+    public function create($user, $title, $description, $project_id)
     {
+
+        $project = Project::find($project_id);
+
+
         $issue = $project->issues()->create([
             'title' => $title,
             'description' => $description,
@@ -23,9 +27,12 @@ class IssueController extends Controller
         return $issue;
     }
 
-    public function update(User $user, Issue $issue, $status )
+    public function update($user, $status, $issue_id )
     {
-       if ($user->cannot('update', $issue)) {
+
+        $issue = Issue::find($issue_id);
+
+        if ($user->cannot('update', $issue)) {
            abort(403);
        }
 

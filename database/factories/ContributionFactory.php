@@ -20,7 +20,6 @@ class ContributionFactory extends Factory
             'title' => $this->faker->sentence,
             'description' => $this->faker->paragraph,
             'link' => $this->faker->url,
-            'isAccepted' => $this->faker->boolean,
         ];
     }
 }
