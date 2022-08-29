@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\ContributionsAPIController;
+use App\Http\Controllers\API\GoalAPIController;
 use App\Http\Controllers\API\IssueAPIController;
 use App\Http\Controllers\API\ProjectAPIController;
 
@@ -42,6 +43,12 @@ Route::group(['prefix' => 'contributions'], function () {
 Route::group(['prefix' => 'issues'], function () {
     Route::post('/', [IssueAPIController::class, 'createIssue'] )->middleware('auth');
     Route::put('/', [IssueAPIController::class, 'updateIssue'] )->middleware('auth');
+});
+
+Route::group(['prefix' => 'goals'], function () {
+    Route::post('/', [GoalAPIController::class, 'createGoal'] )->middleware('auth');
+    Route::put('/', [GoalAPIController::class, 'updateGoal'] )->middleware('auth');
+    Route::delete('/', [GoalAPIController::class, 'deleteGoal'] )->middleware('auth');
 });
 
 //Route::group(['prefix' => 'commentes'])
