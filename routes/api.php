@@ -5,6 +5,7 @@ use App\Http\Controllers\API\GoalAPIController;
 use App\Http\Controllers\API\IssueAPIController;
 use App\Http\Controllers\API\ProjectAPIController;
 
+use App\Http\Controllers\API\TaskAPIController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -49,6 +50,12 @@ Route::group(['prefix' => 'goals'], function () {
     Route::post('/', [GoalAPIController::class, 'createGoal'] )->middleware('auth');
     Route::put('/', [GoalAPIController::class, 'updateGoal'] )->middleware('auth');
     Route::delete('/', [GoalAPIController::class, 'deleteGoal'] )->middleware('auth');
+});
+
+Route::group(['prefix' => 'tasks'], function () {
+    Route::post('/', [TaskAPIController::class, 'createTask'] )->middleware('auth');
+    Route::put('/', [TaskAPIController::class, 'updateTask'] )->middleware('auth');
+    Route::delete('/', [TaskAPIController::class, 'deleteTask'] )->middleware('auth');
 });
 
 //Route::group(['prefix' => 'commentes'])

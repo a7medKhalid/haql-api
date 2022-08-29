@@ -9,7 +9,9 @@ use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
-    public function create(User $user, Goal $goal, $title , $specialitiesIds){
+    public function create($user, $goal_id, $title , $specialtiesIds){
+
+        $goal = Goal::find($goal_id);
 
         if ($user->cannot('update', $goal)) {
             abort(403);
@@ -18,27 +20,33 @@ class TaskController extends Controller
             'title' => $title,
         ]);
 
-        $task->specialities()->attach($specialitiesIds);
+
+
+        $s = $task->specialties()->attach($specialtiesIds);
+
+        $task->save();
 
         return $task;
     }
 
-    public function update(User $user, Task $task, $title = null , $specialitiesIds = null){
+    public function update($user, $task_id, $isCompleted){
+
+        $task = Task::find($task_id);
 
         if ($user->cannot('update', $task)) {
             abort(403);
         }
 
         $task->update([
-            'title' => $title,
+            'isCompleted' => $isCompleted,
         ]);
-
-        $task->specialities()->sync($specialitiesIds);
 
         return $task;
     }
 
-    public function delete(User $user, Task $task){
+    public function delete($user, $task_id){
+
+        $task = Task::find($task_id);
 
         if ($user->cannot('delete', $task)) {
             abort(403);
