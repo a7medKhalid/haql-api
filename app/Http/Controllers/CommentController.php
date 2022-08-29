@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
-    public function create(User $user, $title, $body ,$commentedType, $commented_id)
+    public function create($user, $title, $body ,$commentedType, $commented_id)
     {
         $comment = new Comment();
         $comment->title = $title;
@@ -17,10 +17,15 @@ class CommentController extends Controller
         $comment->commented_id = $commented_id;
         $comment->user_id = $user->id;
         $comment->save();
+
+        return $comment;
     }
 
-    public function update(User $user, Comment $comment, $title, $body)
+    public function update($user, $comment_id, $title, $body)
     {
+
+        $comment = Comment::find($comment_id);
+
         if ($user->cannot('update', $comment)) {
             abort(403);
         }
@@ -28,15 +33,22 @@ class CommentController extends Controller
         $comment->title = $title;
         $comment->body = $body;
         $comment->save();
+
+        return $comment;
     }
 
-    public function delete(User $user, Comment $comment)
+    public function delete($user, $comment_id)
     {
+
+        $comment = Comment::find($comment_id);
+
         if ($user->cannot('delete', $comment)) {
             abort(403);
         }
 
         $comment->delete();
+
+        return $comment;
     }
 
 }

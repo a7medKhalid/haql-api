@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\CommentsAPIController;
 use App\Http\Controllers\API\ContributionsAPIController;
 use App\Http\Controllers\API\GoalAPIController;
 use App\Http\Controllers\API\IssueAPIController;
@@ -68,6 +69,12 @@ Route::group(['prefix' => 'tasks'], function () {
 
 Route::group(['prefix' => 'specialties'], function () {
     Route::post('/', [SpecialtyAPIController::class, 'createSpecialty'] )->middleware('auth');
+});
+
+Route::group(['prefix' => 'comments'], function (){
+    Route::post('/', [CommentsAPIController::class, 'createComment'] )->middleware('auth');
+    Route::put('/', [CommentsAPIController::class, 'updateComment'] )->middleware('auth');
+    Route::delete('/', [CommentsAPIController::class, 'deleteComment'] )->middleware('auth');
 });
 
 //Route::group(['prefix' => 'commentes'])

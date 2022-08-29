@@ -20,4 +20,9 @@ class Issue extends Model
     {
         return $this->belongsTo(Project::class, 'project_id');
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'commented_id')->where('commented_type', 'issue');
+    }
 }
