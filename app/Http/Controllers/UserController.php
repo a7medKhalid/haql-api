@@ -7,8 +7,8 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function update(User $authUser, User $user, $bio = null, $specialtiesIds = null ){
-        if ($authUser->cannot('update', $user)) {
+    public function update($user, $bio = null, $specialtiesIds = null ){
+        if ($user->cannot('update', $user)) {
             abort(403);
         }
 
@@ -17,5 +17,9 @@ class UserController extends Controller
         ]);
 
         $user->specialties()->sync($specialtiesIds);
+
+        $user->save();
+
+        return $user;
     }
 }

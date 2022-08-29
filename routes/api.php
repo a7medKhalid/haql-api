@@ -5,7 +5,9 @@ use App\Http\Controllers\API\GoalAPIController;
 use App\Http\Controllers\API\IssueAPIController;
 use App\Http\Controllers\API\ProjectAPIController;
 
+use App\Http\Controllers\API\SpecialtyAPIController;
 use App\Http\Controllers\API\TaskAPIController;
+use App\Http\Controllers\API\UserAPIController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,8 +24,14 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['prefix' => 'users'], function () {
+    Route::get('/user', function (Request $request) {
+
+        return $request->user();
+
+    })->middleware('auth');
+
+    Route::put('', [UserAPIController::class, 'updateUser'])->middleware('auth');
 });
 
 Route::group(['prefix' => 'projects'], function () {
@@ -56,6 +64,10 @@ Route::group(['prefix' => 'tasks'], function () {
     Route::post('/', [TaskAPIController::class, 'createTask'] )->middleware('auth');
     Route::put('/', [TaskAPIController::class, 'updateTask'] )->middleware('auth');
     Route::delete('/', [TaskAPIController::class, 'deleteTask'] )->middleware('auth');
+});
+
+Route::group(['prefix' => 'specialties'], function () {
+    Route::post('/', [SpecialtyAPIController::class, 'createSpecialty'] )->middleware('auth');
 });
 
 //Route::group(['prefix' => 'commentes'])
