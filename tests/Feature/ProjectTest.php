@@ -25,7 +25,6 @@ class ProjectTest extends TestCase
         $response = $this->json('POST', '/api/projects', [
             'name' => 'Test Project',
             'description' => 'Test Description',
-            'license' => 'Test License',
         ]);
 
         $response->assertStatus(200);

@@ -23,14 +23,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/user', function (Request $request) {
+
+    return $request->user();
+
+})->middleware('auth');
 
 
 Route::group(['prefix' => 'users'], function () {
-    Route::get('/user', function (Request $request) {
-
-        return $request->user();
-
-    })->middleware('auth');
 
     Route::put('', [UserAPIController::class, 'updateUser'])->middleware('auth');
 });

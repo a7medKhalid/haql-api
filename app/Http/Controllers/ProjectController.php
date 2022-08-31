@@ -51,12 +51,11 @@ class ProjectController extends Controller
     }
 
 
-    public function create($user, $name, $description, $license){
+    public function create($user, $name, $description){
 
         $project = Project::create([
             'name' => $name,
             'description' => $description,
-            'license' => $license,
         ]);
 
         $user->projects()->save($project);
