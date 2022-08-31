@@ -84,9 +84,9 @@ Route::group(['prefix' => 'comments'], function (){
 Route::group(['prefix' => 'projects'], function () {
     Route::get('/', [ProjectAPIController::class, 'getProjects']);
     Route::get('/personal', [ProjectAPIController::class, 'getPersonalProjects'])->middleware('auth');
-    Route::get('/{project_id}', [ProjectAPIController::class, 'getProject']);
-    Route::get('/{project_id}/goals', [ProjectAPIController::class, 'getProjectGoals']);
-    Route::get('/{project_id}/issues', [ProjectAPIController::class, 'getProjectIssues']);
-    Route::get('/{project_id}/contributions', [ProjectAPIController::class, 'getProjectContributions']);
-    Route::get('/{project_id}/comments', [ProjectAPIController::class, 'getProjectComments']);
+    Route::get('/{username}/{projectName}', [ProjectAPIController::class, 'getProject']);
+    Route::get('/{username}/{projectName}/goals', [ProjectAPIController::class, 'getProjectGoals']);
+    Route::get('/{username}/{projectName}/issues', [ProjectAPIController::class, 'getProjectIssues']);
+    Route::get('/{username}/{projectName}/contributions', [ProjectAPIController::class, 'getProjectContributions']);
+    Route::get('{username}/{projectName}/comments', [ProjectAPIController::class, 'getProjectComments']);
 });

@@ -30,7 +30,7 @@ class ProjectPageTest extends TestCase
             $user = $project->owner;
 
             $this->actingAs($user);
-            $response = $this->get('api/projects/personal' . $project->id);
+            $response = $this->get('api/projects/personal');
             $response->assertStatus(200);
         }
 
@@ -38,8 +38,9 @@ class ProjectPageTest extends TestCase
     {
 
        $project = Project::first();
+       $user = $project->owner;
 
-        $response = $this->get('api/projects/' . $project->id);
+        $response = $this->get('api/projects/' . $user->username . '/' . $project->name);
         $response->assertStatus(200);
     }
 
@@ -49,7 +50,8 @@ class ProjectPageTest extends TestCase
         $goal = Goal::first();
 
         $project = $goal->project;
-        $response = $this->get('api/projects/' . $project->id . '/goals');
+        $user = $project->owner;
+        $response = $this->get('api/projects/' . $user->username . '/' . $project->name . '/goals');
         $response->assertStatus(200);
     }
 
@@ -59,7 +61,8 @@ class ProjectPageTest extends TestCase
         $issue = Issue::first();
 
         $project = $issue->project;
-        $response = $this->get('api/projects/' . $project->id . '/issues');
+        $user = $project->owner;
+        $response = $this->get('api/projects/' . $user->username . '/' . $project->name . '/issues');
         $response->assertStatus(200);
     }
 
@@ -69,7 +72,8 @@ class ProjectPageTest extends TestCase
         $contribution = Contribution::first();
 
         $project = $contribution->project;
-        $response = $this->get('api/projects/' . $project->id . '/contributions');
+        $user = $project->owner;
+        $response = $this->get('api/projects/' . $user->username . '/' . $project->name . '/contributions');
         $response->assertStatus(200);
     }
 
@@ -78,7 +82,10 @@ class ProjectPageTest extends TestCase
     {
 
         $comment = Comment::where('commentedType', 'project')->first();
-        $response = $this->get('api/projects/' . $comment->commented_id . '/comments');
+        $project = Project::find($comment->commented_id);
+        $user = $project->owner;
+
+        $response = $this->get('api/projects/' . $user->username . '/' . $project->name . '/comments');
         $response->assertStatus(200);
     }
 

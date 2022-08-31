@@ -21,31 +21,36 @@ class ProjectController extends Controller
         return $projects;
     }
 
-    public function getProject($project_id){
-        $project = Project::find($project_id);
+    public function getProject($username, $projectName){
+        $user = User::where('username', $username)->first();
+        $project = $user->projects()->where('name', $projectName)->first();
         return $project;
     }
 
-    public function getProjectGoals($project_id){
-        $project = Project::find($project_id);
+    public function getProjectGoals($username, $projectName){
+        $user = User::where('username', $username)->first();
+        $project = $user->projects()->where('name', $projectName)->first();
         $goals = $project->goals()->paginate(10);
         return $goals;
     }
 
-    public function getProjectIssues($project_id){
-        $project = Project::find($project_id);
+    public function getProjectIssues($username, $projectName){
+        $user = User::where('username', $username)->first();
+        $project = $user->projects()->where('name', $projectName)->first();
         $issues = $project->issues()->paginate(10);
         return $issues;
     }
 
-    public function getProjectContributions($project_id){
-        $project = Project::find($project_id);
+    public function getProjectContributions($username, $projectName){
+        $user = User::where('username', $username)->first();
+        $project = $user->projects()->where('name', $projectName)->first();
         $contributions = $project->contributions()->paginate(10);
         return $contributions;
     }
 
-    public function getProjectComments($project_id){
-        $project = Project::find($project_id);
+    public function getProjectComments($username, $projectName){
+        $user = User::where('username', $username)->first();
+        $project = $user->projects()->where('name', $projectName)->first();
         $comments = $project->comments()->paginate(10);
         return $comments;
     }

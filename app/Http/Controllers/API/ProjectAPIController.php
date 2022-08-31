@@ -23,46 +23,46 @@ class ProjectAPIController extends Controller
         return response()->json($projects);
     }
 
-    public function getProject(Request $request, $project_id){
+    public function getProject(Request $request, $username, $projectName){
         $projects_controller = new ProjectController;
-        $project = $projects_controller->getProject( $project_id);
+        $project = $projects_controller->getProject( $username, $projectName);
         return response()->json($project);
     }
 
-    public function getProjectGoals(Request $request, $project_id){
+    public function getProjectGoals(Request $request, $username, $projectName){
         $projects_controller = new ProjectController;
-        $goals = $projects_controller->getProjectGoals($project_id);
+        $goals = $projects_controller->getProjectGoals($username, $projectName);
         return response()->json($goals);
     }
 
-    public function getProjectIssues(Request $request, $project_id){
+    public function getProjectIssues(Request $request, $username, $projectName){
         $projects_controller = new ProjectController;
-        $issues = $projects_controller->getProjectIssues($project_id);
+        $issues = $projects_controller->getProjectIssues($username, $projectName);
         return response()->json($issues);
     }
 
-    public function getProjectContributions(Request $request, $project_id){
+    public function getProjectContributions(Request $request, $username, $projectName){
         $projects_controller = new ProjectController;
-        $contributions = $projects_controller->getProjectContributions($project_id);
+        $contributions = $projects_controller->getProjectContributions($username, $projectName);
         return response()->json($contributions);
     }
 
-    public function getProjectComments(Request $request, $project_id){
+    public function getProjectComments(Request $request, $username, $projectName){
 
         $projects_controller = new ProjectController;
-        $comments = $projects_controller->getProjectComments($project_id);
+        $comments = $projects_controller->getProjectComments($username, $projectName);
         return response()->json($comments);
     }
 
     public function createProject(Request $request)
     {
+        $user = Auth::user();
 
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:projects,name,owner_id' . $user->id,
             'description' => 'required|string|max:255',
         ]);
 
-        $user = Auth::user();
 
         $project_controller = new ProjectController;
 
