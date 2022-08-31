@@ -10,6 +10,49 @@ use Illuminate\Support\Facades\Auth;
 class ProjectAPIController extends Controller
 {
 
+    public function getProjects(Request $request){
+        $projects_controller = new ProjectController;
+        $projects = $projects_controller->getProjects();
+        return response()->json($projects);
+    }
+
+    public function getPersonalProjects(Request $request){
+        $user = Auth::user();
+        $projects_controller = new ProjectController;
+        $projects = $projects_controller->getPersonalProjects($user);
+        return response()->json($projects);
+    }
+
+    public function getProject(Request $request, $project_id){
+        $projects_controller = new ProjectController;
+        $project = $projects_controller->getProject( $project_id);
+        return response()->json($project);
+    }
+
+    public function getProjectGoals(Request $request, $project_id){
+        $projects_controller = new ProjectController;
+        $goals = $projects_controller->getProjectGoals($project_id);
+        return response()->json($goals);
+    }
+
+    public function getProjectIssues(Request $request, $project_id){
+        $projects_controller = new ProjectController;
+        $issues = $projects_controller->getProjectIssues($project_id);
+        return response()->json($issues);
+    }
+
+    public function getProjectContributions(Request $request, $project_id){
+        $projects_controller = new ProjectController;
+        $contributions = $projects_controller->getProjectContributions($project_id);
+        return response()->json($contributions);
+    }
+
+    public function getProjectComments(Request $request, $project_id){
+
+        $projects_controller = new ProjectController;
+        $comments = $projects_controller->getProjectComments($project_id);
+        return response()->json($comments);
+    }
 
     public function createProject(Request $request)
     {
@@ -18,14 +61,13 @@ class ProjectAPIController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'required|string|max:255',
             'license' => 'required|string|max:255',
-            'license_url' => 'required|string|max:255',
         ]);
 
         $user = Auth::user();
 
         $project_controller = new ProjectController;
 
-        $project = $project_controller->create($user, $request->name, $request->description, $request->license, $request->license_url);
+        $project = $project_controller->create($user, $request->name, $request->description, $request->license);
 
 
 

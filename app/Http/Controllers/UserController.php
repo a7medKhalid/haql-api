@@ -7,12 +7,14 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function update($user, $bio = null, $specialtiesIds = null ){
+    public function update($user, $bio , $specialtiesIds , $username , $name){
         if ($user->cannot('update', $user)) {
             abort(403);
         }
 
         $user->update([
+            'name' => $name,
+            'username' => $username,
             'bio' => $bio,
         ]);
 

@@ -33,6 +33,6 @@ class Project extends Model
 
     public function comments()
     {
-        return $this->hasMany(Comment::class, 'commented_id')->where('commented_type', 'project');
+        return $this->hasMany(Comment::class, 'commented_id')->where('commentedType', 'project');
     }
 }

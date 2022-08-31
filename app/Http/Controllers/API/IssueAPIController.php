@@ -26,10 +26,10 @@ class IssueAPIController extends Controller
         return $issue;
     }
 
-    public function updateIssue(Request $request)
+    public function updateIssueStatus(Request $request)
     {
         $request->validate([
-            'status' => ['required', Rule::in(['open', 'closed'])],
+            'status' => ['required', Rule::in(['open', 'closed', 'processed'])],
             'issue_id' => ['required', 'integer'],
         ]);
 

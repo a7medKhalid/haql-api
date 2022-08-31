@@ -11,13 +11,52 @@ use Illuminate\Support\Facades\Auth;
 class ProjectController extends Controller
 {
 
-    public function create($user, $name, $description,$licnse,$licnse_url){
+    public function getProjects(){
+        $projects = Project::paginate(10);
+        return $projects;
+    }
+
+    public function getPersonalProjects($user){
+        $projects = $user->projects()->paginate(10);
+        return $projects;
+    }
+
+    public function getProject($project_id){
+        $project = Project::find($project_id);
+        return $project;
+    }
+
+    public function getProjectGoals($project_id){
+        $project = Project::find($project_id);
+        $goals = $project->goals()->paginate(10);
+        return $goals;
+    }
+
+    public function getProjectIssues($project_id){
+        $project = Project::find($project_id);
+        $issues = $project->issues()->paginate(10);
+        return $issues;
+    }
+
+    public function getProjectContributions($project_id){
+        $project = Project::find($project_id);
+        $contributions = $project->contributions()->paginate(10);
+        return $contributions;
+    }
+
+    public function getProjectComments($project_id){
+        $project = Project::find($project_id);
+        $comments = $project->comments()->paginate(10);
+        return $comments;
+    }
+
+
+    public function create($user, $name, $description, $license){
 
         $project = Project::create([
             'name' => $name,
             'description' => $description,
-            'license' => $licnse,
-            'license_url' => $licnse_url,
+            'license' => $license,
         ]);
 
         $user->projects()->save($project);

@@ -20,7 +20,7 @@ class Comment extends Model
     //comment has many comments
     public function comments()
     {
-        return $this->hasMany(Comment::class, 'commented_id')->where('commented_type', 'comment');
+        return $this->hasMany(Comment::class, 'commented_id')->where('commentedType', 'comment');
     }
 
 

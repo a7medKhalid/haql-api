@@ -20,6 +20,8 @@ class UserTest extends TestCase
         $response = $this->json('PUT', '/api/users' , [
             'bio' => 'Test Bio',
             'specialtiesIds' => [1,2],
+            'username' => 'Test Username',
+            'name' => 'Test Name',
         ]);
         $response->assertStatus(200);
         $response->assertJson([

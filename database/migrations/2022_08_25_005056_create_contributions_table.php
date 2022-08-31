@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->string('title');
-            $table->string('description');
+            $table->text('description');
             $table->string('link');
             $table->boolean('isAccepted')->default(false);
 

@@ -26,7 +26,7 @@ class GoalAPIController extends Controller
         return $goal;
     }
 
-    public function updateGoal(Request $request){
+    public function updateGoalStatus(Request $request){
 
         $request->validate([
             'goal_id' => 'required|integer',

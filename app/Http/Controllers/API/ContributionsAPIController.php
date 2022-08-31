@@ -30,7 +30,7 @@ class ContributionsAPIController extends Controller
 
     }
 
-    public function updateContribution(Request $request){
+    public function updateContributionStatus(Request $request){
 
         $request->validate([
             'contribution_id' => 'required|integer',

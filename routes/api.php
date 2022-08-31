@@ -36,6 +36,8 @@ Route::group(['prefix' => 'users'], function () {
 });
 
 Route::group(['prefix' => 'projects'], function () {
+Route::get('', [ProjectAPIController::class, 'getProjects']);
+    Route::get('/personal', [ProjectAPIController::class, 'getPersonalProjects'])->middleware('auth');
 
     Route::post('/', [ProjectAPIController::class, 'createProject'] )->middleware('auth');
     Route::put('/', [ProjectAPIController::class, 'updateProject'] )->middleware('auth');
@@ -45,19 +47,19 @@ Route::group(['prefix' => 'projects'], function () {
 
 Route::group(['prefix' => 'contributions'], function () {
     Route::post('/', [ContributionsAPIController::class, 'createContribution'] )->middleware('auth');
-    Route::put('/', [ContributionsAPIController::class, 'updateContribution'] )->middleware('auth');
+    Route::put('/', [ContributionsAPIController::class, 'updateContributionStatus'] )->middleware('auth');
     Route::delete('/', [ContributionsAPIController::class, 'deleteContribution'] )->middleware('auth');
 });
 
 
 Route::group(['prefix' => 'issues'], function () {
     Route::post('/', [IssueAPIController::class, 'createIssue'] )->middleware('auth');
-    Route::put('/', [IssueAPIController::class, 'updateIssue'] )->middleware('auth');
+    Route::put('/', [IssueAPIController::class, 'updateIssueStatus'] )->middleware('auth');
 });
 
 Route::group(['prefix' => 'goals'], function () {
     Route::post('/', [GoalAPIController::class, 'createGoal'] )->middleware('auth');
-    Route::put('/', [GoalAPIController::class, 'updateGoal'] )->middleware('auth');
+    Route::put('/', [GoalAPIController::class, 'updateGoalStatus'] )->middleware('auth');
     Route::delete('/', [GoalAPIController::class, 'deleteGoal'] )->middleware('auth');
 });
 
@@ -77,4 +79,14 @@ Route::group(['prefix' => 'comments'], function (){
     Route::delete('/', [CommentsAPIController::class, 'deleteComment'] )->middleware('auth');
 });
 
-//Route::group(['prefix' => 'commentes'])
+//web pages routes
+
+Route::group(['prefix' => 'projects'], function () {
+    Route::get('/', [ProjectAPIController::class, 'getProjects']);
+    Route::get('/personal', [ProjectAPIController::class, 'getPersonalProjects'])->middleware('auth');
+    Route::get('/{project_id}', [ProjectAPIController::class, 'getProject']);
+    Route::get('/{project_id}/goals', [ProjectAPIController::class, 'getProjectGoals']);
+    Route::get('/{project_id}/issues', [ProjectAPIController::class, 'getProjectIssues']);
+    Route::get('/{project_id}/contributions', [ProjectAPIController::class, 'getProjectContributions']);
+    Route::get('/{project_id}/comments', [ProjectAPIController::class, 'getProjectComments']);
+});

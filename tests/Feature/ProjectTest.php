@@ -26,7 +26,6 @@ class ProjectTest extends TestCase
             'name' => 'Test Project',
             'description' => 'Test Description',
             'license' => 'Test License',
-            'license_url' => 'Test License URL',
         ]);
 
         $response->assertStatus(200);
