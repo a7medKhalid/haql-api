@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,7 +21,9 @@ class ProjectFactory extends Factory
             'name' => $this->faker->name,
             'description' => $this->faker->text,
             'license' => $this->faker->word,
-            'license_url' => $this->faker->url,
+            'owner_id' => function () {
+                return User::factory()->create()->id;
+            },
         ];
     }
 }
