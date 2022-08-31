@@ -20,7 +20,6 @@ class ProjectFactory extends Factory
         return [
             'name' => $this->faker->name,
             'description' => $this->faker->text,
-            'license' => $this->faker->word,
             'owner_id' => function () {
                 return User::factory()->create()->id;
             },
