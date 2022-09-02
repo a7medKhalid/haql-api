@@ -7,14 +7,13 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function update($user, $bio , $specialtiesIds , $username , $name){
+    public function update($user, $bio , $specialtiesIds , $name){
         if ($user->cannot('update', $user)) {
             abort(403);
         }
 
         $user->update([
             'name' => $name,
-            'username' => $username,
             'bio' => $bio,
         ]);
 
@@ -48,7 +47,11 @@ class UserController extends Controller
 
     public function getUserContributions($username){
         $user = User::where('username', $username)->first();
-        $contributions = $user->contributions()->paginate(10);
+        $contributions = $user->contributions()->with('projects')->paginate(10)->through(function ($contribution) {
+            $project = $contribution->project;
+            $contribution->projectName = $project->name;
+            return $contribution;
+        });
         return $contributions;
     }
 }

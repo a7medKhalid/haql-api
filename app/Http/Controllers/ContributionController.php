@@ -56,4 +56,9 @@ class ContributionController extends Controller
         return $contribution;
     }
 
+    public function getContribution($contribution_id){
+        $contribution = Contribution::find($contribution_id);
+        return $contribution;
+    }
+
 }

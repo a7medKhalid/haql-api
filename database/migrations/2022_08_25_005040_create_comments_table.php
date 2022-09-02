@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('body');
 
-            $table->enum('commentedType', ['comment', 'project', 'issue']);
+            $table->enum('commentedType', ['comment', 'project', 'issue', 'contribution']);
             $table->foreignId('commented_id')->nullable();
 
 

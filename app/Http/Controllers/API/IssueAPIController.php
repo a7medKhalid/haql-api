@@ -41,5 +41,19 @@ class IssueAPIController extends Controller
         return $issue;
     }
 
+    public function getIssue(Request $request)
+    {
+        $request->validate([
+            'issue_id' => ['required', 'integer'],
+        ]);
+
+        $user = Auth::user();
+
+        $issueController = new IssueController();
+        $issue = $issueController->getIssue($request->issue_id);
+
+        return $issue;
+    }
+
 
 }

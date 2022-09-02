@@ -56,4 +56,14 @@ class TaskController extends Controller
 
         return $task;
     }
+
+
+    public function getTask($task_id){
+        $task = Task::find($task_id);
+        $specialties = $task->specialties()->get();
+        $task->specialties = $specialties;
+        return $task;
+    }
+
+
 }

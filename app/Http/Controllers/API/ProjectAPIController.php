@@ -42,6 +42,10 @@ class ProjectAPIController extends Controller
     }
 
     public function getProjectContributions(Request $request, $username, $projectName){
+        $request->validate([
+            'status' => ['string', 'nullable', 'in:open,accepted,rejected,archived'],
+        ]);
+
         $projects_controller = new ProjectController;
         $contributions = $projects_controller->getProjectContributions($username, $projectName);
         return response()->json($contributions);

@@ -41,10 +41,18 @@ class ProjectController extends Controller
         return $issues;
     }
 
-    public function getProjectContributions($username, $projectName){
+    public function getProjectContributions($username, $projectName, $status = null){
+
+
         $user = User::where('username', $username)->first();
         $project = $user->projects()->where('name', $projectName)->first();
-        $contributions = $project->contributions()->paginate(10);
+
+        if ($status == null){
+            $contributions = $project->contributions()->where('project_id', $projectName)->paginate(10);
+        }else{
+            $contributions = $project->contributions()->where('project_id', $projectName)->where('status', $status)->paginate(10);
+        }
+
         return $contributions;
     }
 

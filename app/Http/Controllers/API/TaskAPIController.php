@@ -56,4 +56,19 @@ class TaskAPIController extends Controller
         return $task;
     }
 
+    public function getTask(Request $request){
+        $request->validate([
+            'task_id' => 'required|integer',
+        ]);
+
+        $user = Auth::user();
+
+        $tasks_controller = new TaskController;
+        $tasks = $tasks_controller->getTask($request->task_id);
+
+        return $tasks;
+    }
+
+
+
 }

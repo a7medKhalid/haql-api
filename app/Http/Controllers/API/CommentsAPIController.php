@@ -16,7 +16,7 @@ class CommentsAPIController extends Controller
        $request->validate([
            'title' => 'required|string',
            'body' => 'required|string',
-           'commentedType' => ['required', 'string', Rule::in(['comment', 'project', 'issue'])],
+           'commentedType' => ['required', 'string', Rule::in(['comment', 'project', 'issue', 'contribution'])],
            'commented_id' => 'required|integer',
        ]);
         $user = Auth::user();

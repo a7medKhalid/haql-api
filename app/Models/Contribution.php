@@ -20,4 +20,9 @@ class Contribution extends Model
     {
         return $this->belongsTo(User::class, 'contributor_id');
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'commented_id')->where('commentedType', 'contribution');
+    }
 }

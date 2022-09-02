@@ -151,8 +151,23 @@ Route::group(['prefix' => 'projects'], function () {
 });
 
 Route::group(['prefix' => 'goals'], function () {
-    Route::get('', [GoalAPIController::class, 'getGoals']);
     Route::get('/{goal_id}', [GoalAPIController::class, 'getGoal']);
 });
+
+Route::group(['prefix' => 'tasks'], function () {
+    Route::get('/{task_id}', [TaskAPIController::class, 'getTask']);
+});
+
+Route::group(['prefix' => 'issues'], function () {
+    Route::get('/{issue_id}', [IssueAPIController::class, 'getIssue']);
+});
+
+Route::group(['prefix' => 'contributions'], function () {
+    Route::get('/{contribution_id}', [ContributionsAPIController::class, 'getContribution']);
+});
+
+
+
+
 
 

@@ -42,4 +42,10 @@ class IssueController extends Controller
        return $issue;
 
     }
+
+    public function getIssue($issue_id){
+        $issue = Issue::find($issue_id);
+        return $issue;
+    }
+
 }
