@@ -27,6 +27,8 @@ class UserController extends Controller
 
     public function getUser($username){
         $user = User::where('username', $username)->first();
+        $specialties = $user->specialties()->paginate(10);
+        $user->specialties = $specialties;
 
         return $user;
     }
