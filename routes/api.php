@@ -9,8 +9,13 @@ use App\Http\Controllers\API\ProjectAPIController;
 use App\Http\Controllers\API\SpecialtyAPIController;
 use App\Http\Controllers\API\TaskAPIController;
 use App\Http\Controllers\API\UserAPIController;
+use App\Models\Goal;
+use App\Models\Issue;
+use App\Models\Project;
+use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Validation\Rule;
 
 /*
 |--------------------------------------------------------------------------
@@ -80,6 +85,53 @@ Route::group(['prefix' => 'comments'], function (){
 });
 
 //web pages routes
+
+//permissions route
+Route::get('/permissions', function (Request $request) {
+    $request->validate([
+        'model' => ['required', Rule::in(['project', 'goal', 'task', 'issue'])],
+        'model_id' => ['required', 'integer'],
+
+        'permission' => ['required', Rule::In(['create', 'update', 'delete'])],
+    ]);
+
+    $model = $request->model;
+    $model_id = $request->model_id;
+
+    if($model === 'project') {
+        $model = Project::find($model_id);
+    } else if($model === 'goal') {
+        $model = Goal::find($model_id);
+    } else if($model === 'task') {
+        $model = Task::find($model_id);
+    } else if($model === 'issue') {
+        $model = Issue::find($model_id);
+    }
+
+    $user = $request->user();
+    $permission = $request->permission;
+
+    if ($permission === 'create') {
+        if ($user->can('create', $model)) {
+            return response()->json(['message' => true]);
+        } else {
+            return response()->json(['message' => false]);
+        }
+    } else if ($permission === 'update') {
+        if ($user->can('update', $model)) {
+            return response()->json(['message' => true]);
+        } else {
+            return response()->json(['message' => false]);
+        }
+    } else if ($permission === 'delete') {
+        if ($user->can('delete', $model)) {
+            return response()->json(['message' => true]);
+        } else {
+            return response()->json(['message' => false]);
+        }
+    }
+
+})->middleware('auth');
 
 Route::group(['prefix' => 'users'], function (){
     Route::get('/{username}', [UserAPIController::class, 'getUser'] );
