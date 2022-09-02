@@ -55,6 +55,27 @@ class GoalController extends Controller
         return $goal;
     }
 
+    public function getGoals($username, $projectName){
+        $user = User::where('username', $username)->first();
+        $project = $user->projects()->where('name', $projectName)->first();
+
+
+        $goals = $project->goals()->get();
+
+        return $goals;
+    }
+
+    public function getGoal($goal_id){
+
+        $goal = Goal::where('id', $goal_id)->first();
+        $tasks = $goal->tasks()->get();
+
+        $goal->tasks = $tasks;
+
+        return $goal;
+    }
+
+
 
 
 }

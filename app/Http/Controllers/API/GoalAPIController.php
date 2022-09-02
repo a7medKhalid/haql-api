@@ -56,4 +56,33 @@ class GoalAPIController extends Controller
 
         return $goal;
     }
+
+    public function getGoals(Request $request){
+
+        $request->validate([
+            'username' => 'required|string',
+            'projectName' => 'required|string',
+        ]);
+
+        $user = Auth::user();
+
+        $goals_controller = new GoalController;
+
+        $goals = $goals_controller->getGoals($request->usename, $request->projectName);
+
+        return $goals;
+    }
+
+    public function getGoal(Request $request, $goal_id){
+
+            $user = Auth::user();
+
+            $goals_controller = new GoalController;
+
+            $goal = $goals_controller->getGoal($goal_id);
+
+            return $goal;
+    }
+
+
 }

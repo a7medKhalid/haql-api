@@ -95,4 +95,32 @@ class GoalTest extends TestCase
             'isCompleted' => true,
         ]);
     }
+
+    public function test_get_goal()
+    {
+        $this->seed();
+
+        $goal = Goal::first();
+
+        $response = $this->get('api/goals/' . $goal->id);
+        $response->assertStatus(200);
+    }
+
+//    public function test_get_goals()
+//    {
+//
+//        $this->seed();
+//        // TOD: fix test
+//        $user = User::first();
+//        $project = Project::factory()->create(['owner_id' => $user->id]);
+//
+//        $response = $this->call('GET', 'api/goals', [
+//            'username' => $user->username,
+//            'projectName' => $project->name,
+//        ]);
+//
+//        $response->assertStatus(200);
+//    }
+
+
 }

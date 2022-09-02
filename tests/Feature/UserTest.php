@@ -34,6 +34,8 @@ class UserTest extends TestCase
 
     public function test_get_user()
     {
+        $this->seed();
+
         $user = User::factory()->create(['name' => 'user']);
         $this->actingAs($user);
         $response = $this->get('/api/users/' . $user->username);
