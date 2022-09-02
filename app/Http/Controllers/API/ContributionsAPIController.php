@@ -6,6 +6,7 @@ use App\Http\Controllers\ContributionController;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class ContributionsAPIController extends Controller
 {
@@ -34,13 +35,13 @@ class ContributionsAPIController extends Controller
 
         $request->validate([
             'contribution_id' => 'required|integer',
-            'isAccepted' => 'required|boolean',
+            'status' => ['required', Rule::in(['open', 'accepted', 'rejected', 'archived'])],
         ]);
 
         $user = Auth::user();
 
         $contributions_controller = new ContributionController;
-        $contribution = $contributions_controller->update($user, $request->contribution_id, $request->isAccepted);
+        $contribution = $contributions_controller->update($user, $request->contribution_id, $request->status);
 
         return response()->json($contribution);
 

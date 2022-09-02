@@ -26,7 +26,7 @@ class ContributionController extends Controller
         return $contribution;
     }
 
-    public function update($user, $contribution_id, $isAccepted)
+    public function update($user, $contribution_id, $status)
     {
         $contribution = Contribution::find($contribution_id);
 
@@ -35,7 +35,7 @@ class ContributionController extends Controller
         }
 
         $contribution->update([
-            'isAccepted' => $isAccepted,
+            'status' => $status,
         ]);
 
         return $contribution;

@@ -47,7 +47,7 @@ class ContributionTest extends TestCase
 
         $response = $this->actingAs($user)->put('api/contributions/',[
         'contribution_id' => $contribution->id,
-          'isAccepted' => true,
+            'status' => 'accepted',
         ]);
 
         $response->assertStatus(403);
@@ -56,7 +56,7 @@ class ContributionTest extends TestCase
             'title' => 'ContributionTitle',
             'description' => 'ContributionDescription',
             'link' => 'ContributionLink',
-            'isAccepted' => false,
+            'status' => 'open',
         ]);
 
     }
@@ -68,7 +68,7 @@ class ContributionTest extends TestCase
 
         $response = $this->actingAs($user)->put('api/contributions/',[
         'contribution_id' => $contribution->id,
-          'isAccepted' => true,
+            'status' => 'accepted'
         ]);
 
         $response->assertStatus(200);
@@ -77,7 +77,7 @@ class ContributionTest extends TestCase
             'title' => 'ContributionTitle',
             'description' => 'ContributionDescription',
             'link' => 'ContributionLink',
-            'isAccepted' => true,
+            'status' => 'accepted',
         ]);
     }
 
@@ -96,7 +96,7 @@ class ContributionTest extends TestCase
             'title' => 'ContributionTitle',
             'description' => 'ContributionDescription',
             'link' => 'ContributionLink',
-            'isAccepted' => true,
+            'status' => 'accepted',
         ]);
     }
 

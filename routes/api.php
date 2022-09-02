@@ -99,7 +99,7 @@ Route::group(['prefix' => 'projects'], function () {
 });
 
 Route::group(['prefix' => 'goals'], function () {
-    Route::get('/{username}/{projectName}/{goalName}', [GoalAPIController::class, 'getGoal']);
+    Route::get('/{username}/{projectName}', [GoalAPIController::class, 'getGoals']);
     Route::get('/{username}/{projectName}/{goalName}/tasks', [GoalAPIController::class, 'getGoalTasks']);
     Route::get('/{username}/{projectName}/{goalName}/comments', [GoalAPIController::class, 'getGoalComments']);
 });

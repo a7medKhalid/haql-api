@@ -13,7 +13,7 @@ class ContributionPolicy
 
     public function delete(User $user, Contribution $contribution)
     {
-        if ($contribution->isAccepted) {
+        if ($contribution->status != 'open') {
             return false;
         }
 

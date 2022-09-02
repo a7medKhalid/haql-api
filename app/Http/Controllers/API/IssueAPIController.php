@@ -29,7 +29,7 @@ class IssueAPIController extends Controller
     public function updateIssueStatus(Request $request)
     {
         $request->validate([
-            'status' => ['required', Rule::in(['open', 'closed', 'processed'])],
+            'status' => ['required', Rule::in(['open', 'closed'])],
             'issue_id' => ['required', 'integer'],
         ]);
 

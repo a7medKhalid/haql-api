@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('description');
             $table->string('link');
-            $table->boolean('isAccepted')->default(false);
+            $table->enum('status',  ['open', 'accepted', 'rejected', 'archived'])->default('open');
 
             $table->foreignId('contributor_id')->nullable();
             $table->foreignId('project_id')->nullable();
