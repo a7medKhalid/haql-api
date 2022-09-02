@@ -22,4 +22,28 @@ class UserAPIController extends Controller
         $user = $user_controller->update($user, $request->bio, $request->specialtiesIds, $request->username, $request->name);
         return $user;
     }
+
+    public function getUser(Request $request, $username){
+        $user_controller = new UserController;
+        $user = $user_controller->getUser($username);
+        return $user;
+    }
+
+    public function getUserProjects(Request $request, $username){
+        $user_controller = new UserController;
+        $projects = $user_controller->getUserProjects($username);
+        return $projects;
+    }
+
+    public function getUserSpecialties(Request $request, $username){
+        $user_controller = new UserController;
+        $specialties = $user_controller->getUserSpecialties($username);
+        return $specialties;
+    }
+
+    public function getUserContributions(Request $request, $username){
+        $user_controller = new UserController;
+        $contributions = $user_controller->getUserContributions($username);
+        return $contributions;
+    }
 }

@@ -24,4 +24,29 @@ class UserController extends Controller
 
         return $user;
     }
+
+    public function getUser($username){
+        $user = User::where('username', $username)->first();
+
+        return $user;
+    }
+
+    public function getUserSpecialties($username){
+        $user = User::where('username', $username)->first();
+        $specialties = $user->specialties()->paginate(10);
+
+        return $specialties;
+    }
+
+    public function getUserProjects($username){
+        $user = User::where('username', $username)->first();
+        $projects = $user->projects()->paginate(10);
+        return $projects;
+    }
+
+    public function getUserContributions($username){
+        $user = User::where('username', $username)->first();
+        $contributions = $user->contributions()->paginate(10);
+        return $contributions;
+    }
 }

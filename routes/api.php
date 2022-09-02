@@ -81,6 +81,13 @@ Route::group(['prefix' => 'comments'], function (){
 
 //web pages routes
 
+Route::group(['prefix' => 'users'], function (){
+    Route::get('/{username}', [UserAPIController::class, 'getUser'] );
+    Route::get('/{username}/projects', [UserAPIController::class, 'getUserProjects'] );
+    Route::get('/{username}/contributions', [UserAPIController::class, 'getUserContributions'] );
+    Route::get('/{username}/specialties', [UserAPIController::class, 'getUserSpecialties'] );
+});
+
 Route::group(['prefix' => 'projects'], function () {
     Route::get('/', [ProjectAPIController::class, 'getProjects']);
     Route::get('/personal', [ProjectAPIController::class, 'getPersonalProjects'])->middleware('auth');
@@ -90,3 +97,11 @@ Route::group(['prefix' => 'projects'], function () {
     Route::get('/{username}/{projectName}/contributions', [ProjectAPIController::class, 'getProjectContributions']);
     Route::get('{username}/{projectName}/comments', [ProjectAPIController::class, 'getProjectComments']);
 });
+
+Route::group(['prefix' => 'goals'], function () {
+    Route::get('/{username}/{projectName}/{goalName}', [GoalAPIController::class, 'getGoal']);
+    Route::get('/{username}/{projectName}/{goalName}/tasks', [GoalAPIController::class, 'getGoalTasks']);
+    Route::get('/{username}/{projectName}/{goalName}/comments', [GoalAPIController::class, 'getGoalComments']);
+});
+
+

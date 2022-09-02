@@ -32,4 +32,40 @@ class UserTest extends TestCase
         ]);
     }
 
+    public function test_get_user()
+    {
+        $user = User::factory()->create(['name' => 'user']);
+        $this->actingAs($user);
+        $response = $this->get('/api/users/' . $user->username);
+        $response->assertStatus(200);
+
+    }
+
+    public function test_get_user_specialties()
+    {
+        $user = User::factory()->create(['name' => 'user']);
+        $this->actingAs($user);
+        $response = $this->get('/api/users/' . $user->username . '/specialties');
+        $response->assertStatus(200);
+
+    }
+
+    public function test_get_user_projects()
+    {
+        $user = User::factory()->create(['name' => 'user']);
+        $this->actingAs($user);
+        $response = $this->get('/api/users/' . $user->username . '/projects');
+        $response->assertStatus(200);
+
+    }
+
+    public function test_get_user_contributions()
+    {
+        $user = User::factory()->create(['name' => 'user']);
+        $this->actingAs($user);
+        $response = $this->get('/api/users/' . $user->username . '/contributions');
+        $response->assertStatus(200);
+
+    }
+
 }
