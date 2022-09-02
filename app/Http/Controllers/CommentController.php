@@ -51,4 +51,10 @@ class CommentController extends Controller
         return $comment;
     }
 
+    public function getComment($comment_id){
+        $comment = Comment::find($comment_id);
+        $comment->comments = $comment->comments()->get();
+        return $comment;
+    }
+
 }

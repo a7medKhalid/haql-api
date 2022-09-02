@@ -61,4 +61,11 @@ class ContributionController extends Controller
         return $contribution;
     }
 
+    public function getComments($contribution_id){
+        $contribution = Contribution::find($contribution_id);
+        $contribution->comments =$contribution->comments()->get();
+
+        return $contribution;
+    }
+
 }

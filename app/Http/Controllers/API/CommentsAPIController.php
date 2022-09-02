@@ -51,5 +51,15 @@ class CommentsAPIController extends Controller
         return response()->json($comment);
     }
 
+    public function getCommentComments(Request $request){
+        $request->validate([
+            'comment_id' => 'required|integer',
+        ]);
+        $comments_controller = new CommentController;
+        $comments = $comments_controller->getComment($request->comment_id);
+
+        return response()->json($comments);
+    }
+
 
 }

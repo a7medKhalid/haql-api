@@ -48,4 +48,11 @@ class IssueController extends Controller
         return $issue;
     }
 
+    public function getComments($issue_id){
+        $issue = Issue::find($issue_id);
+        $issue->comments =$issue->comments()->get();
+
+        return $issue;
+    }
+
 }

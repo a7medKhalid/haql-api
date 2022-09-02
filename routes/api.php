@@ -160,10 +160,16 @@ Route::group(['prefix' => 'tasks'], function () {
 
 Route::group(['prefix' => 'issues'], function () {
     Route::get('/{issue_id}', [IssueAPIController::class, 'getIssue']);
+    Route::get('/{issue_id}/comments', [IssueAPIController::class, 'getIssueComments']);
 });
 
 Route::group(['prefix' => 'contributions'], function () {
     Route::get('/{contribution_id}', [ContributionsAPIController::class, 'getContribution']);
+    Route::get('/{contribution_id}/comments', [ContributionsAPIController::class, 'getContributionComments']);
+});
+
+Route::group(['prefix' => 'comments'], function () {
+    Route::get('/{comment_id}', [CommentsAPIController::class, 'getCommentComments']);
 });
 
 

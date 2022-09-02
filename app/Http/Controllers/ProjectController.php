@@ -59,8 +59,8 @@ class ProjectController extends Controller
     public function getProjectComments($username, $projectName){
         $user = User::where('username', $username)->first();
         $project = $user->projects()->where('name', $projectName)->first();
-        $comments = $project->comments()->paginate(10);
-        return $comments;
+        $project->comments = $project->comments()->get();
+        return $project;
     }
 
 
