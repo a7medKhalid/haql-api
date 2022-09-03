@@ -48,9 +48,9 @@ class ProjectController extends Controller
         $project = $user->projects()->where('name', $projectName)->first();
 
         if ($status == null){
-            $contributions = $project->contributions()->where('project_id', $projectName)->paginate(10);
+            $contributions = $project->contributions()->paginate(10);
         }else{
-            $contributions = $project->contributions()->where('project_id', $projectName)->where('status', $status)->paginate(10);
+            $contributions = $project->contributions()->where('status', $status)->paginate(10);
         }
 
         return $contributions;
