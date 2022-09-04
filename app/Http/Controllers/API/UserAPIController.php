@@ -22,6 +22,24 @@ class UserAPIController extends Controller
         return $user;
     }
 
+    public function getLatestUsers(Request $request){
+        $user_controller = new UserController;
+        $users = $user_controller->getLatestUsers();
+        return $users;
+    }
+
+    public function getMostContributors(Request $request){
+        $user_controller = new UserController;
+        $users = $user_controller->getMostContributors();
+        return $users;
+    }
+
+    public function getMostProjects(Request $request){
+        $user_controller = new UserController;
+        $users = $user_controller->getMostProjects();
+        return $users;
+    }
+
     public function getUser(Request $request, $username){
         $user_controller = new UserController;
         $user = $user_controller->getUser($username);

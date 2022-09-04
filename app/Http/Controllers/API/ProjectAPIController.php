@@ -16,6 +16,19 @@ class ProjectAPIController extends Controller
         return response()->json($projects);
     }
 
+    public function getTrendingProjects(Request $request){
+        $projects_controller = new ProjectController;
+        $projects = $projects_controller->getTrendingProjects();
+        return response()->json($projects);
+    }
+
+    public function getRelatedProjects(Request $request){
+        $user = Auth::user();
+        $projects_controller = new ProjectController;
+        $projects = $projects_controller->getRelatedProjects($user);
+        return response()->json($projects);
+    }
+
     public function getPersonalProjects(Request $request){
         $user = Auth::user();
         $projects_controller = new ProjectController;
@@ -23,38 +36,38 @@ class ProjectAPIController extends Controller
         return response()->json($projects);
     }
 
-    public function getProject(Request $request, $username, $projectName){
+    public function getProject(Request $request, $project_id){
         $projects_controller = new ProjectController;
-        $project = $projects_controller->getProject( $username, $projectName);
+        $project = $projects_controller->getProject($project_id);
         return response()->json($project);
     }
 
-    public function getProjectGoals(Request $request, $username, $projectName){
+    public function getProjectGoals(Request $request, $project_id){
         $projects_controller = new ProjectController;
-        $goals = $projects_controller->getProjectGoals($username, $projectName);
+        $goals = $projects_controller->getProjectGoals($project_id);
         return response()->json($goals);
     }
 
-    public function getProjectIssues(Request $request, $username, $projectName){
+    public function getProjectIssues(Request $request, $project_id){
         $projects_controller = new ProjectController;
-        $issues = $projects_controller->getProjectIssues($username, $projectName);
+        $issues = $projects_controller->getProjectIssues($project_id);
         return response()->json($issues);
     }
 
-    public function getProjectContributions(Request $request, $username, $projectName){
+    public function getProjectContributions(Request $request,$project_id){
         $request->validate([
             'status' => ['string', 'nullable', 'in:open,accepted,rejected,archived'],
         ]);
 
         $projects_controller = new ProjectController;
-        $contributions = $projects_controller->getProjectContributions($username, $projectName);
+        $contributions = $projects_controller->getProjectContributions($project_id, $request->status);
         return response()->json($contributions);
     }
 
-    public function getProjectComments(Request $request, $username, $projectName){
+    public function getProjectComments(Request $request,$project_id){
 
         $projects_controller = new ProjectController;
-        $comments = $projects_controller->getProjectComments($username, $projectName);
+        $comments = $projects_controller->getProjectComments($project_id);
         return response()->json($comments);
     }
 

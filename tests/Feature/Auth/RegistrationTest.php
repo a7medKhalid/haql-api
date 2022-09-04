@@ -19,6 +19,8 @@ class RegistrationTest extends TestCase
             'password_confirmation' => 'password',
         ]);
 
+        $response->assertstatus(204);
+
         $this->assertAuthenticated();
         $response->assertNoContent();
     }

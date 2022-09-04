@@ -13,6 +13,71 @@ class UserTest extends TestCase
 
     use MigrateFreshSeedOnce;
 
+    //TODO: test get latest users and most contributors and most projects and all users (name, username, projectsCount, IssuesCount, contributionsCount)
+
+    public function test_get_latest_users()
+    {
+        $this->seed();
+
+        $response = $this->get('api/users');
+        $response->assertStatus(200);
+
+        $response->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'id',
+                    'name',
+                    'username',
+                    'projectsCount',
+                    'issuesCount',
+                    'contributionsCount',
+                ]
+            ]
+        ]);
+    }
+
+    public function test_get_most_contributors()
+    {
+        $this->seed();
+
+        $response = $this->get('api/users/most-contributors');
+        $response->assertStatus(200);
+
+        $response->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'id',
+                    'name',
+                    'username',
+                    'projectsCount',
+                    'issuesCount',
+                    'contributionsCount',
+                ]
+            ]
+        ]);
+    }
+
+    public function test_get_most_projects()
+    {
+        $this->seed();
+
+        $response = $this->get('api/users/most-projects');
+        $response->assertStatus(200);
+
+        $response->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'id',
+                    'name',
+                    'username',
+                    'projectsCount',
+                    'issuesCount',
+                    'contributionsCount',
+                ]
+            ]
+        ]);
+    }
+
     public function test_update_user()
     {
         $user = User::factory()->create(['name' => 'user']);
@@ -41,6 +106,13 @@ class UserTest extends TestCase
         $response = $this->get('/api/users/' . $user->username);
         $response->assertStatus(200);
 
+        $response->assertJsonStructure([
+            'id',
+            'name',
+            'username',
+            'bio',
+        ]);
+
     }
 
     public function test_get_user_specialties()
@@ -49,6 +121,15 @@ class UserTest extends TestCase
         $this->actingAs($user);
         $response = $this->get('/api/users/' . $user->username . '/specialties');
         $response->assertStatus(200);
+
+        $response->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'id',
+                    'name',
+                ]
+            ]
+        ]);
 
     }
 
@@ -59,6 +140,17 @@ class UserTest extends TestCase
         $response = $this->get('/api/users/' . $user->username . '/projects');
         $response->assertStatus(200);
 
+        $response->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'id',
+                    'name',
+                    'description',
+                    'contributionsCount',
+                    'issuesCount',
+                ]
+            ]
+        ]);
     }
 
     public function test_get_user_contributions()
@@ -67,6 +159,19 @@ class UserTest extends TestCase
         $this->actingAs($user);
         $response = $this->get('/api/users/' . $user->username . '/contributions');
         $response->assertStatus(200);
+
+        $response->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'id',
+                    'title',
+                    'description',
+                    'projectName',
+                    'project_id',
+                    'created_at',
+                ]
+            ]
+        ]);
 
     }
 

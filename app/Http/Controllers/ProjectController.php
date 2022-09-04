@@ -12,54 +12,106 @@ class ProjectController extends Controller
 {
 
     public function getProjects(){
-        $projects = Project::paginate(10);
+        $projects = Project::latest()->paginate(10)->through(function ($project) {
+
+            $contributionsCount = $project->contributions()->count();
+            $issuesCount = $project->issues()->count();
+
+            $project->contributionsCount = $contributionsCount;
+            $project->issuesCount = $issuesCount;
+            return $project;
+        });;
         return $projects;
     }
 
     public function getPersonalProjects($user){
-        $projects = $user->projects()->paginate(10);
+        $projects = $user->projects()->paginate(10)->through(function ($project) {
+
+            $contributionsCount = $project->contributions()->count();
+            $issuesCount = $project->issues()->count();
+
+            $project->contributionsCount = $contributionsCount;
+            $project->issuesCount = $issuesCount;
+            return $project;
+        });
         return $projects;
     }
 
-    public function getProject($username, $projectName){
-        $user = User::where('username', $username)->first();
-        $project = $user->projects()->where('name', $projectName)->first();
+    public function getTrendingProjects(){
+
+        //get all projects sorted by child contributions count
+        $projects = Project::withCount('contributions')->orderBy('contributions_count', 'desc')->paginate(10)->through(function ($project) {
+
+            $contributionsCount = $project->contributions()->count();
+            $issuesCount = $project->issues()->count();
+
+            $project->contributionsCount = $contributionsCount;
+            $project->issuesCount = $issuesCount;
+            return $project;
+        });;
+        return $projects;
+    }
+
+//    public function getRelatedProjects($user){
+//        //get projects where tasks
+//        $projects = $user->projects()->paginate(10);
+//        return $projects;
+//    }
+
+
+
+    public function getProject($project_id){
+        $project = Project::find($project_id);
         return $project;
     }
 
-    public function getProjectGoals($username, $projectName){
-        $user = User::where('username', $username)->first();
-        $project = $user->projects()->where('name', $projectName)->first();
-        $goals = $project->goals()->paginate(10);
+    public function getProjectGoals($project_id){
+        $project = Project::find($project_id);
+        $goals = $project->goals()->paginate(10)->through(function ($goal) {
+            $goal->tasks = $goal->tasks()->get();
+            return $goal;
+        });
         return $goals;
     }
 
-    public function getProjectIssues($username, $projectName){
-        $user = User::where('username', $username)->first();
-        $project = $user->projects()->where('name', $projectName)->first();
-        $issues = $project->issues()->paginate(10);
+    public function getProjectIssues($project_id){
+        $project = Project::find($project_id);
+        $issues = $project->issues()->paginate(10)->through(function ($issue) {
+            $issue->issuerName = $issue->user->name;
+            return $issue;
+        });
         return $issues;
     }
 
-    public function getProjectContributions($username, $projectName, $status = null){
+    public function getProjectContributions($project_id, $status = null){
 
 
-        $user = User::where('username', $username)->first();
-        $project = $user->projects()->where('name', $projectName)->first();
+        $project = Project::find($project_id);
 
         if ($status == null){
-            $contributions = $project->contributions()->paginate(10);
+            $contributions = $project->contributions()->paginate(10)->through(function ($contribution) {
+                $contribution->contributorName = $contribution->contributor->name;
+                return $contribution;
+            });
         }else{
-            $contributions = $project->contributions()->where('status', $status)->paginate(10);
+            $contributions = $project->contributions()->where('status', $status)->paginate(10)->through(function ($contribution) {
+                $contribution->contributorName = $contribution->contributor->name;
+                return $contribution;
+            });
         }
 
         return $contributions;
     }
 
-    public function getProjectComments($username, $projectName){
-        $user = User::where('username', $username)->first();
-        $project = $user->projects()->where('name', $projectName)->first();
-        $project->comments = $project->comments()->get();
+    public function getProjectComments($project_id){
+
+        $project = Project::find($project_id);
+        $project->comments = $project->comments()->paginate(10)->through(function ($comment) {
+            $comment->commenterName = $comment->user->name;
+            $comment->commenterUsername = $comment->user->username;
+            return $comment;
+        });
+
         return $project;
     }
 

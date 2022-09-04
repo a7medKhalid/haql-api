@@ -54,4 +54,34 @@ class UserController extends Controller
         });
         return $contributions;
     }
+
+    public function getLatestUsers(){
+        $users = User::latest()->paginate(10)->through(function ($user) {
+           $user->projectsCount = $user->projects()->count();
+           $user->contributionsCount = $user->contributions()->count();
+           $user->issuesCount = $user->issues()->count();
+            return $user;
+        });
+        return $users;
+    }
+
+    public function getMostContributors(){
+        $users = User::withCount('contributions')->orderBy('contributions_count', 'desc')->paginate(10)->through(function ($user) {
+            $user->projectsCount = $user->projects()->count();
+            $user->contributionsCount = $user->contributions()->count();
+            $user->issuesCount = $user->issues()->count();
+            return $user;
+        });;
+        return $users;
+    }
+
+    public function getMostProjects(){
+        $users = User::withCount('projects')->orderBy('projects_count', 'desc')->paginate(10)->through(function ($user) {
+            $user->projectsCount = $user->projects()->count();
+            $user->contributionsCount = $user->contributions()->count();
+            $user->issuesCount = $user->issues()->count();
+            return $user;
+        });;
+        return $users;
+    }
 }
