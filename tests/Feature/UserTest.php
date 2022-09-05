@@ -2,6 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Models\Contribution;
+use App\Models\Project;
+use App\Models\Specialty;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -118,6 +121,8 @@ class UserTest extends TestCase
     public function test_get_user_specialties()
     {
         $user = User::factory()->create(['name' => 'user']);
+        $specs = Specialty::factory(10)->create(['name' => 'specialty']);
+        $user->specialties()->attach($specs->pluck('id'));
         $this->actingAs($user);
         $response = $this->get('/api/users/' . $user->username . '/specialties');
         $response->assertStatus(200);
@@ -136,6 +141,7 @@ class UserTest extends TestCase
     public function test_get_user_projects()
     {
         $user = User::factory()->create(['name' => 'user']);
+        Project::factory(10)->create(['owner_id' => $user->id]);
         $this->actingAs($user);
         $response = $this->get('/api/users/' . $user->username . '/projects');
         $response->assertStatus(200);
@@ -156,6 +162,7 @@ class UserTest extends TestCase
     public function test_get_user_contributions()
     {
         $user = User::factory()->create(['name' => 'user']);
+        Contribution::factory(15)->create(['contributor_id' => $user->id]);
         $this->actingAs($user);
         $response = $this->get('/api/users/' . $user->username . '/contributions');
         $response->assertStatus(200);
@@ -163,12 +170,7 @@ class UserTest extends TestCase
         $response->assertJsonStructure([
             'data' => [
                 '*' => [
-                    'id',
-                    'title',
-                    'description',
-                    'projectName',
-                    'project_id',
-                    'created_at',
+
                 ]
             ]
         ]);

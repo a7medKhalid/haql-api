@@ -41,13 +41,18 @@ class UserController extends Controller
 
     public function getUserProjects($username){
         $user = User::where('username', $username)->first();
-        $projects = $user->projects()->paginate(10);
+        $projects = $user->projects()->paginate(10)->through(function ($project) {
+           $project->contributionsCount = $project->contributions()->count();
+              $project->issuesCount = $project->issues()->count();
+            return $project;
+        });
         return $projects;
     }
 
     public function getUserContributions($username){
         $user = User::where('username', $username)->first();
-        $contributions = $user->contributions()->with('projects')->paginate(10)->through(function ($contribution) {
+
+        $contributions = $user->contributions()->paginate(10)->through(function ($contribution) {
             $project = $contribution->project;
             $contribution->projectName = $project->name;
             return $contribution;
