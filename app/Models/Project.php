@@ -35,4 +35,9 @@ class Project extends Model
     {
         return $this->hasMany(Comment::class, 'commented_id')->where('commentedType', 'project');
     }
+
+    public function contributors()
+    {
+        return $this->belongsToMany(User::class, 'contributions', 'project_id', 'contributor_id');
+    }
 }

@@ -156,6 +156,7 @@ Route::group(['prefix' => 'projects'], function () {
     Route::get('{project_id}/issues', [ProjectAPIController::class, 'getProjectIssues']);//
     Route::get('{project_id}/contributions', [ProjectAPIController::class, 'getProjectContributions']);//
     Route::get('{project_id}/comments', [ProjectAPIController::class, 'getProjectComments']);//
+    Route::get('{project_id}/contributors', [ProjectAPIController::class, 'getProjectContributors']);//
 });
 
 Route::group(['prefix' => 'goals'], function () {

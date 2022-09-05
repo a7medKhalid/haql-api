@@ -175,6 +175,7 @@ class ContributionTest extends TestCase
         $comments = Comment::factory()->count(3)->create([
             'commented_id' => $contribution->id,
             'commentedType' => 'contribution',
+            'user_id' => $user->id,
         ]);
         $contribution->comments()->saveMany($comments);
 
@@ -183,8 +184,8 @@ class ContributionTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            [
-                'comments' => [
+            'comments' => [
+                'data' => [
                     '*' => [
                         'id',
                         'title',
@@ -196,8 +197,8 @@ class ContributionTest extends TestCase
                     ]
                 ]
             ]
-        ]);
 
+        ]);
     }
 
 

@@ -114,22 +114,25 @@ class IssueTest extends TestCase
         $user = User::where(['name' => 'issueProjectMaker'])->first();
         $this->actingAs($user);
         $issue = Issue::first();
-        $comments = Comment::factory()->count(5)->create(['commented_id' => $issue->id , 'commentedType' => 'issue']);
+        $comments = Comment::factory()->count(5)->create(['commented_id' => $issue->id , 'commentedType' => 'issue', 'user_id' => $user->id]);
         $issue->comments()->saveMany($comments);
         $response = $this->json('GET', '/api/issues/' . $issue->id . '/comments');
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'data' => [
-                '*' => [
-                    'id',
-                    'title',
-                    'body',
-                    'commenterName',
-                    'commenterUsername',
-                    'user_id',
-                    'created_at',
+            'comments' => [
+                'data' => [
+                    '*' => [
+                        'id',
+                        'title',
+                        'body',
+                        'commenterName',
+                        'commenterUsername',
+                        'user_id',
+                        'created_at',
+                    ]
                 ]
             ]
+
         ]);
     }
 

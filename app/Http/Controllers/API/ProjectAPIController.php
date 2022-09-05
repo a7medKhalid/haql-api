@@ -71,6 +71,12 @@ class ProjectAPIController extends Controller
         return response()->json($comments);
     }
 
+    public function getProjectContributors(Request $request,$project_id){
+        $projects_controller = new ProjectController;
+        $contributors = $projects_controller->getProjectContributors($project_id);
+        return response()->json($contributors);
+    }
+
     public function createProject(Request $request)
     {
         $user = Auth::user();

@@ -51,7 +51,11 @@ class IssueController extends Controller
 
     public function getComments($issue_id){
         $issue = Issue::find($issue_id);
-        $issue->comments =$issue->comments()->get();
+        $issue->comments =$issue->comments()->paginate(10)->through(function ($comment) {
+            $comment->commenterName = $comment->user->name;
+            $comment->commenterUsername = $comment->user->username;
+            return $comment;
+        });
 
         return $issue;
     }

@@ -32,6 +32,8 @@ class ProjectPageTest extends TestCase
                     'owner_id',
                     'contributionsCount',
                     'issuesCount',
+                    'ownerUsername',
+
                 ]
             ]
         ]);
@@ -54,6 +56,7 @@ class ProjectPageTest extends TestCase
                     'owner_id',
                     'contributionsCount',
                     'issuesCount',
+                    'ownerUsername',
                 ]
             ]
         ]);
@@ -167,35 +170,59 @@ class ProjectPageTest extends TestCase
     }
 
 
-    //TODO: test_get_project_comments
-//    //test_get_project_comments
-//    public function test_get_project_comments()
-//    {
-//
-//        $comment = Comment::where('commentedType', 'project')->first();
-//        $project = Project::find($comment->commented_id);
-//        $user = $project->owner;
-//
-//        $response = $this->get('api/projects/' . $project->id . '/comments');
-//        $response->assertStatus(200);
-//
-//        $response->assertJsonStructure([
-//            'comments' => [
-//                'data' => [
-//                    '*' => [
-//                        'id',
-//                        'title',
-//                        'body',
-//                        'commenterName',
-//                        'commenterUsername',
-//                        'user_id',
-//                        'created_at',
-//                    ]
-//                ]
-//            ]
-//
-//        ]);
-//    }
+
+
+    //test_get_project_comments
+    public function test_get_project_comments()
+    {
+
+        $comment = Comment::where('commentedType', 'project')->first();
+        $project = Project::find($comment->commented_id);
+        $user = $project->owner;
+
+        $response = $this->get('api/projects/' . $project->id . '/comments');
+        $response->assertStatus(200);
+
+        $response->assertJsonStructure([
+            'comments' => [
+                'data' => [
+                    '*' => [
+                        'id',
+                        'title',
+                        'body',
+                        'commenterName',
+                        'commenterUsername',
+                        'user_id',
+                        'created_at',
+                    ]
+                ]
+            ]
+
+        ]);
+    }
+
+    public function test_get_project_contributors()
+    {
+        $contribution = Contribution::first();
+
+        $project = $contribution->project;
+        $user = $project->owner;
+        $response = $this->get('api/projects/' . $project->id . '/contributors');
+        $response->assertStatus(200);
+
+        $response->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'id',
+                    'name',
+                    'username',
+                    'bio',
+                    'created_at',
+                    'updated_at',
+                ]
+            ]
+        ]);
+    }
 
 
 

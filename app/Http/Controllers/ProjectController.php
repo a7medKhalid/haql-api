@@ -19,6 +19,7 @@ class ProjectController extends Controller
 
             $project->contributionsCount = $contributionsCount;
             $project->issuesCount = $issuesCount;
+            $project->ownerUsername = $project->owner->username;
             return $project;
         });;
         return $projects;
@@ -32,6 +33,7 @@ class ProjectController extends Controller
 
             $project->contributionsCount = $contributionsCount;
             $project->issuesCount = $issuesCount;
+
             return $project;
         });
         return $projects;
@@ -47,6 +49,8 @@ class ProjectController extends Controller
 
             $project->contributionsCount = $contributionsCount;
             $project->issuesCount = $issuesCount;
+            $project->ownerUsername = $project->owner->username;
+
             return $project;
         });;
         return $projects;
@@ -115,6 +119,14 @@ class ProjectController extends Controller
         return $project;
     }
 
+    public function getProjectContributors($project_id){
+        $project = Project::find($project_id);
+        $contributors = $project->contributors()->paginate(10)->through(function ($contributor) {
+            $contributor->contributionsCount = $contributor->contributions()->count();
+            return $contributor;
+        });
+        return $contributors;
+    }
 
     public function create($user, $name, $description){
 
