@@ -39,6 +39,8 @@ class IssueTest extends TestCase
         $this->assertDatabaseHas('issues', [
             'title' => 'Test Issue',
             'description' => 'Test Description',
+            'project_id' => $project->id,
+            'user_id' => $user->id,
         ]);
     }
 

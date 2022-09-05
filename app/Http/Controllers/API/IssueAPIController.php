@@ -20,8 +20,10 @@ class IssueAPIController extends Controller
             'project_id' => ['required', 'integer'],
         ]);
 
+        $user = Auth::user();
+
         $issueController = new IssueController();
-        $issue = $issueController->create($request->user, $request->title, $request->body, $request->project_id);
+        $issue = $issueController->create($user, $request->title, $request->body, $request->project_id);
 
         return $issue;
     }

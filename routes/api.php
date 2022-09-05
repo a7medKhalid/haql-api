@@ -32,55 +32,55 @@ Route::get('/user', function (Request $request) {
 
     return $request->user();
 
-})->middleware('auth');//
+})->middleware('auth:sanctum');//
 
 
 Route::group(['prefix' => 'users'], function () {
 
-    Route::put('', [UserAPIController::class, 'updateUser'])->middleware('auth');
+    Route::put('', [UserAPIController::class, 'updateUser'])->middleware('auth:sanctum');
 });
 
 Route::group(['prefix' => 'projects'], function () {
 
 
-    Route::post('/', [ProjectAPIController::class, 'createProject'] )->middleware('auth');
-    Route::put('/', [ProjectAPIController::class, 'updateProject'] )->middleware('auth');
-    Route::delete('/', [ProjectAPIController::class, 'deleteProject'] )->middleware('auth');
+    Route::post('/', [ProjectAPIController::class, 'createProject'] )->middleware('auth:sanctum');
+    Route::put('/', [ProjectAPIController::class, 'updateProject'] )->middleware('auth:sanctum');
+    Route::delete('/', [ProjectAPIController::class, 'deleteProject'] )->middleware('auth:sanctum');
 
 });
 
 Route::group(['prefix' => 'contributions'], function () {
-    Route::post('/', [ContributionsAPIController::class, 'createContribution'] )->middleware('auth');
-    Route::put('/', [ContributionsAPIController::class, 'updateContributionStatus'] )->middleware('auth');
-    Route::delete('/', [ContributionsAPIController::class, 'deleteContribution'] )->middleware('auth');
+    Route::post('/', [ContributionsAPIController::class, 'createContribution'] )->middleware('auth:sanctum');
+    Route::put('/', [ContributionsAPIController::class, 'updateContributionStatus'] )->middleware('auth:sanctum');
+    Route::delete('/', [ContributionsAPIController::class, 'deleteContribution'] )->middleware('auth:sanctum');
 });
 
 
 Route::group(['prefix' => 'issues'], function () {
-    Route::post('/', [IssueAPIController::class, 'createIssue'] )->middleware('auth');
-    Route::put('/', [IssueAPIController::class, 'updateIssueStatus'] )->middleware('auth');
+    Route::post('/', [IssueAPIController::class, 'createIssue'] )->middleware('auth:sanctum');
+    Route::put('/', [IssueAPIController::class, 'updateIssueStatus'] )->middleware('auth:sanctum');
 });
 
 Route::group(['prefix' => 'goals'], function () {
-    Route::post('/', [GoalAPIController::class, 'createGoal'] )->middleware('auth');
-    Route::put('/', [GoalAPIController::class, 'updateGoalStatus'] )->middleware('auth');
-    Route::delete('/', [GoalAPIController::class, 'deleteGoal'] )->middleware('auth');
+    Route::post('/', [GoalAPIController::class, 'createGoal'] )->middleware('auth:sanctum');
+    Route::put('/', [GoalAPIController::class, 'updateGoalStatus'] )->middleware('auth:sanctum');
+    Route::delete('/', [GoalAPIController::class, 'deleteGoal'] )->middleware('auth:sanctum');
 });
 
 Route::group(['prefix' => 'tasks'], function () {
-    Route::post('/', [TaskAPIController::class, 'createTask'] )->middleware('auth');
-    Route::put('/', [TaskAPIController::class, 'updateTask'] )->middleware('auth');
-    Route::delete('/', [TaskAPIController::class, 'deleteTask'] )->middleware('auth');
+    Route::post('/', [TaskAPIController::class, 'createTask'] )->middleware('auth:sanctum');
+    Route::put('/', [TaskAPIController::class, 'updateTask'] )->middleware('auth:sanctum');
+    Route::delete('/', [TaskAPIController::class, 'deleteTask'] )->middleware('auth:sanctum');
 });
 
 Route::group(['prefix' => 'specialties'], function () {
-    Route::post('/', [SpecialtyAPIController::class, 'createSpecialty'] )->middleware('auth');
+    Route::post('/', [SpecialtyAPIController::class, 'createSpecialty'] )->middleware('auth:sanctum');
 });
 
 Route::group(['prefix' => 'comments'], function (){
-    Route::post('/', [CommentsAPIController::class, 'createComment'] )->middleware('auth');
-    Route::put('/', [CommentsAPIController::class, 'updateComment'] )->middleware('auth');
-    Route::delete('/', [CommentsAPIController::class, 'deleteComment'] )->middleware('auth');
+    Route::post('/', [CommentsAPIController::class, 'createComment'] )->middleware('auth:sanctum');
+    Route::put('/', [CommentsAPIController::class, 'updateComment'] )->middleware('auth:sanctum');
+    Route::delete('/', [CommentsAPIController::class, 'deleteComment'] )->middleware('auth:sanctum');
 });
 
 //web pages routes
@@ -130,7 +130,7 @@ Route::get('/permissions', function (Request $request) {
         }
     }
 
-})->middleware('auth');//
+})->middleware('auth:sanctum');//
 
 Route::group(['prefix' => 'users'], function (){
 
@@ -148,8 +148,8 @@ Route::group(['prefix' => 'projects'], function () {
 
     Route::get('', [ProjectAPIController::class, 'getProjects']);//
     Route::get('/trending', [ProjectAPIController::class, 'getTrendingProjects']);//
-//    Route::get('/related', [ProjectAPIController::class, 'getRelatedProjects'])->middleware('auth');
-    Route::get('/personal', [ProjectAPIController::class, 'getPersonalProjects'])->middleware('auth');//
+//    Route::get('/related', [ProjectAPIController::class, 'getRelatedProjects'])->middleware('auth:sanctum');
+    Route::get('/personal', [ProjectAPIController::class, 'getPersonalProjects'])->middleware('auth:sanctum');//
 
     Route::get('{project_id}', [ProjectAPIController::class, 'getProject']);//
     Route::get('{project_id}/goals', [ProjectAPIController::class, 'getProjectGoals']);//
