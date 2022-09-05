@@ -58,6 +58,7 @@ class ContributionController extends Controller
 
     public function getContribution($contribution_id){
         $contribution = Contribution::find($contribution_id);
+        $contribution->contributorName = $contribution->contributor->name;
         return $contribution;
     }
 

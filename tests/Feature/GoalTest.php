@@ -103,6 +103,7 @@ class GoalTest extends TestCase
         $goal = Goal::first();
 
         $response = $this->get('api/goals/' . $goal->id);
+
         $response->assertStatus(200);
     }
 

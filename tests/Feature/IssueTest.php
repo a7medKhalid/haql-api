@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Comment;
 use App\Models\Issue;
 use App\Models\Project;
 use App\Models\User;
@@ -87,6 +88,46 @@ class IssueTest extends TestCase
             'title' => 'Test Issue',
             'description' => 'Test Description',
             'status' => 'closed',
+        ]);
+    }
+
+    //test get issue by id (id, title, description, status, issuerName, project_id, created_at)
+    public function test_get_issue_by_id(){
+        $user = User::where(['name' => 'issueProjectMaker'])->first();
+        $this->actingAs($user);
+        $issue = Issue::factroy()->create(['issuer_id' => $user->id]);
+        $response = $this->json('GET', '/api/issues/' . $issue->id);
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'title',
+            'description' ,
+            'status' ,
+            'issuerName' ,
+            'project_id',
+        ]);
+    }
+
+    //test get issue comments (id, title, body, commenterName, commenterUsername, user_id, created_at)
+    public function test_get_issue_comments(){
+        $user = User::where(['name' => 'issueProjectMaker'])->first();
+        $this->actingAs($user);
+        $issue = Issue::first();
+        $comments = Comment::factory()->count(5)->create(['commented_id' => $issue->id , 'commentedType' => 'issue']);
+        $issue->comments()->saveMany($comments);
+        $response = $this->json('GET', '/api/issues/' . $issue->id . '/comments');
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'id',
+                    'title',
+                    'body',
+                    'commenterName',
+                    'commenterUsername',
+                    'user_id',
+                    'created_at',
+                ]
+            ]
         ]);
     }
 

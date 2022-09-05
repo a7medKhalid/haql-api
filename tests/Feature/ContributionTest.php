@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Comment;
 use App\Models\Contribution;
 use App\Models\Project;
 use App\Models\User;
@@ -122,6 +123,81 @@ class ContributionTest extends TestCase
             'link' => 'ContributionLink',
         ]);
 
+
+    }
+
+    //test get contribution by id (title, description, link, status, project_id, contributor_id, contributor_name, created_at, )
+    public function testGetContributionById(){
+        $user = User::factory()->create(['name' => 'ContributionMaker']);
+        $project = Project::factory()->create([
+            'name' => 'ContributionProject',
+        ]);
+        $contribution = Contribution::factory()->create([
+            'title' => 'ContributionTitle ToGet',
+            'description' => 'ContributionDescription',
+            'link' => 'ContributionLink',
+            'project_id' => $project->id,
+            'contributor_id' => $user->id,
+        ]);
+        $response = $this->actingAs($user)->get('api/contributions/'.$contribution->id);
+        $response->assertStatus(200);
+
+        $response->assertJsonStructure(
+            [
+
+                'id',
+                'title',
+                'description',
+                'link',
+                'status',
+                'project_id',
+                'contributor_id',
+                'contributorName',
+                'created_at',
+
+            ]
+        );
+    }
+
+    //test get contribution comments (id, title, body, commenterName, commenterUsername, user_id, created_at)
+    public function test_get_contribution_comments(){
+        $user = User::factory()->create(['name' => 'ContributionMaker']);
+        $project = Project::factory()->create([
+            'name' => 'ContributionProject',
+        ]);
+        $contribution = Contribution::factory()->create([
+            'title' => 'ContributionTitle ToGet',
+            'description' => 'ContributionDescription',
+            'link' => 'ContributionLink',
+            'project_id' => $project->id,
+            'contributor_id' => $user->id,
+        ]);
+        $comments = Comment::factory()->count(3)->create([
+            'commented_id' => $contribution->id,
+            'commentedType' => 'contribution',
+        ]);
+        $contribution->comments()->saveMany($comments);
+
+
+        $response = $this->actingAs($user)->get('api/contributions/'.$contribution->id.'/comments');
+
+        dd($response->json()['comments']);
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            [
+                'comments' => [
+                    '*' => [
+                        'id',
+                        'title',
+                        'body',
+                        'commenterName',
+                        'commenterUsername',
+                        'user_id',
+                        'created_at',
+                    ]
+                ]
+            ]
+        ]);
 
     }
 

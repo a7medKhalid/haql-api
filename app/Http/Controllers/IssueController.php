@@ -45,6 +45,7 @@ class IssueController extends Controller
 
     public function getIssue($issue_id){
         $issue = Issue::find($issue_id);
+        $issue->issuerName = $issue->user->name;
         return $issue;
     }
 

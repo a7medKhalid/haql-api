@@ -32,7 +32,7 @@ Route::get('/user', function (Request $request) {
 
     return $request->user();
 
-})->middleware('auth');
+})->middleware('auth');//
 
 
 Route::group(['prefix' => 'users'], function () {
@@ -130,55 +130,53 @@ Route::get('/permissions', function (Request $request) {
         }
     }
 
-})->middleware('auth');
+})->middleware('auth');//
 
 Route::group(['prefix' => 'users'], function (){
 
-    Route::get('/', [UserAPIController::class, 'getLatestUsers'] );
-    Route::get('/most-contributors', [UserAPIController::class, 'getMostContributors'] );
-    Route::get('/most-projects', [UserAPIController::class, 'getMostProjects'] );
+    Route::get('/', [UserAPIController::class, 'getLatestUsers'] );//
+    Route::get('/most-contributors', [UserAPIController::class, 'getMostContributors'] );//
+    Route::get('/most-projects', [UserAPIController::class, 'getMostProjects'] );//
 
-    Route::get('/{username}', [UserAPIController::class, 'getUser'] );
-    Route::get('/{username}/projects', [UserAPIController::class, 'getUserProjects'] );
-    Route::get('/{username}/contributions', [UserAPIController::class, 'getUserContributions'] );
-    Route::get('/{username}/specialties', [UserAPIController::class, 'getUserSpecialties'] );
+    Route::get('/{username}', [UserAPIController::class, 'getUser'] );//
+    Route::get('/{username}/projects', [UserAPIController::class, 'getUserProjects'] );//
+    Route::get('/{username}/contributions', [UserAPIController::class, 'getUserContributions'] );//
+    Route::get('/{username}/specialties', [UserAPIController::class, 'getUserSpecialties'] );//
 });
 
 Route::group(['prefix' => 'projects'], function () {
 
-    Route::get('', [ProjectAPIController::class, 'getProjects']);
-    Route::get('/trending', [ProjectAPIController::class, 'getTrendingProjects']);
+    Route::get('', [ProjectAPIController::class, 'getProjects']);//
+    Route::get('/trending', [ProjectAPIController::class, 'getTrendingProjects']);//
 //    Route::get('/related', [ProjectAPIController::class, 'getRelatedProjects'])->middleware('auth');
+    Route::get('/personal', [ProjectAPIController::class, 'getPersonalProjects'])->middleware('auth');//
 
-    Route::get('/personal', [ProjectAPIController::class, 'getPersonalProjects'])->middleware('auth');
-
-    Route::get('{project_id}', [ProjectAPIController::class, 'getProject']);
-    Route::get('{project_id}/personal', [ProjectAPIController::class, 'getPersonalProjects'])->middleware('auth');
-    Route::get('{project_id}/goals', [ProjectAPIController::class, 'getProjectGoals']);
-    Route::get('{project_id}/issues', [ProjectAPIController::class, 'getProjectIssues']);
-    Route::get('{project_id}/contributions', [ProjectAPIController::class, 'getProjectContributions']);
-    Route::get('{project_id}/comments', [ProjectAPIController::class, 'getProjectComments']);
+    Route::get('{project_id}', [ProjectAPIController::class, 'getProject']);//
+    Route::get('{project_id}/goals', [ProjectAPIController::class, 'getProjectGoals']);//
+    Route::get('{project_id}/issues', [ProjectAPIController::class, 'getProjectIssues']);//
+    Route::get('{project_id}/contributions', [ProjectAPIController::class, 'getProjectContributions']);//
+    Route::get('{project_id}/comments', [ProjectAPIController::class, 'getProjectComments']);//
 });
 
 Route::group(['prefix' => 'goals'], function () {
-    Route::get('/{goal_id}', [GoalAPIController::class, 'getGoal']);
+    Route::get('/{goal_id}', [GoalAPIController::class, 'getGoal']);//
 });
 
 Route::group(['prefix' => 'tasks'], function () {
-    Route::get('/{task_id}', [TaskAPIController::class, 'getTask']);
+    Route::get('/{task_id}', [TaskAPIController::class, 'getTask']);//
 });
 
 Route::group(['prefix' => 'issues'], function () {
-    Route::get('/{issue_id}', [IssueAPIController::class, 'getIssue']);
-    Route::get('/{issue_id}/comments', [IssueAPIController::class, 'getIssueComments']);
+    Route::get('/{issue_id}', [IssueAPIController::class, 'getIssue']);//
+    Route::get('/{issue_id}/comments', [IssueAPIController::class, 'getIssueComments']);//
 });
 
 Route::group(['prefix' => 'contributions'], function () {
 
-    Route::get('/personal', [ContributionAPIController::class, 'getPersonalContribution']);
+//    Route::get('/personal', [ContributionAPIController::class, 'getPersonalContribution']);
 
-    Route::get('/{contribution_id}', [ContributionsAPIController::class, 'getContribution']);
-    Route::get('/{contribution_id}/comments', [ContributionsAPIController::class, 'getContributionComments']);
+    Route::get('/{contribution_id}', [ContributionsAPIController::class, 'getContribution']);//
+    Route::get('/{contribution_id}/comments', [ContributionsAPIController::class, 'getContributionComments']);//
 });
 
 Route::group(['prefix' => 'comments'], function () {

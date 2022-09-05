@@ -63,33 +63,28 @@ class ContributionsAPIController extends Controller
 
     }
 
-    public function getContribution(Request $request){
+    public function getContribution(Request $request, $contribution_id){
 
-        $request->validate([
-            'contribution_id' => 'required|integer',
-        ]);
+
 
         $user = Auth::user();
 
         $contributions_controller = new ContributionController;
 
-        $contribution = $contributions_controller->getContribution($request->contribution_id);
+        $contribution = $contributions_controller->getContribution($contribution_id);
 
         return response()->json($contribution);
 
     }
 
-    public function getContributionComments(Request $request){
+    public function getContributionComments(Request $request, $contribution_id){
 
-        $request->validate([
-            'contribution_id' => 'required|integer',
-        ]);
 
         $user = Auth::user();
 
         $contributions_controller = new ContributionController;
 
-        $contribution = $contributions_controller->getComments($request->contribution_id);
+        $contribution = $contributions_controller->getComments($contribution_id);
 
         return response()->json($contribution);
 
