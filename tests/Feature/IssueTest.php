@@ -95,7 +95,7 @@ class IssueTest extends TestCase
     public function test_get_issue_by_id(){
         $user = User::where(['name' => 'issueProjectMaker'])->first();
         $this->actingAs($user);
-        $issue = Issue::factroy()->create(['issuer_id' => $user->id]);
+        $issue = Issue::factory()->create(['user_id' => $user->id]);
         $response = $this->json('GET', '/api/issues/' . $issue->id);
         $response->assertStatus(200);
         $response->assertJsonStructure([

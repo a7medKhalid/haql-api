@@ -181,7 +181,6 @@ class ContributionTest extends TestCase
 
         $response = $this->actingAs($user)->get('api/contributions/'.$contribution->id.'/comments');
 
-        dd($response->json()['comments']);
         $response->assertStatus(200);
         $response->assertJsonStructure([
             [
