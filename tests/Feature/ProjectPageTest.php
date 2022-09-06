@@ -7,8 +7,6 @@ use App\Models\Contribution;
 use App\Models\Goal;
 use App\Models\Issue;
 use App\Models\Project;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\MigrateFreshSeedOnce;
 use Tests\TestCase;
 
@@ -34,16 +32,13 @@ class ProjectPageTest extends TestCase
                     'issuesCount',
                     'ownerUsername',
 
-                ]
-            ]
+                ],
+            ],
         ]);
-
-
     }
 
     public function test_get_trending_projects()
     {
-
         $response = $this->get('api/projects/trending');
         $response->assertStatus(200);
 
@@ -57,42 +52,38 @@ class ProjectPageTest extends TestCase
                     'contributionsCount',
                     'issuesCount',
                     'ownerUsername',
-                ]
-            ]
+                ],
+            ],
         ]);
     }
 
-
     public function test_get_personal_projects()
-        {
+    {
+        $project = Project::first();
+        $user = $project->owner;
 
-            $project = Project::first();
-            $user = $project->owner;
+        $this->actingAs($user);
+        $response = $this->get('api/projects/personal');
+        $response->assertStatus(200);
 
-            $this->actingAs($user);
-            $response = $this->get('api/projects/personal');
-            $response->assertStatus(200);
-
-            $response->assertJsonStructure([
-                'data' => [
-                    '*' => [
-                        'id',
-                        'name',
-                        'description',
-                        'contributionsCount',
-                        'issuesCount',
-                    ]
-                ]
-            ]);
-
-        }
+        $response->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'id',
+                    'name',
+                    'description',
+                    'contributionsCount',
+                    'issuesCount',
+                ],
+            ],
+        ]);
+    }
 
     public function test_get_project()
     {
+        $project = Project::first();
 
-       $project = Project::first();
-
-        $response = $this->get('api/projects/' . $project->id);
+        $response = $this->get('api/projects/'.$project->id);
         $response->assertStatus(200);
 
         $response->assertJsonStructure([
@@ -109,7 +100,7 @@ class ProjectPageTest extends TestCase
 
         $project = $goal->project;
         $user = $project->owner;
-        $response = $this->get('api/projects/' . $project->id . '/goals');
+        $response = $this->get('api/projects/'.$project->id.'/goals');
         $response->assertStatus(200);
 
         $response->assertJsonStructure([
@@ -118,9 +109,9 @@ class ProjectPageTest extends TestCase
                     'id',
                     'title',
                     'description',
-                    'tasks'
-                ]
-            ]
+                    'tasks',
+                ],
+            ],
         ]);
     }
 
@@ -131,7 +122,7 @@ class ProjectPageTest extends TestCase
 
         $project = $issue->project;
         $user = $project->owner;
-        $response = $this->get('api/projects/' . $project->id . '/issues');
+        $response = $this->get('api/projects/'.$project->id.'/issues');
         $response->assertStatus(200);
 
         $response->assertJsonStructure([
@@ -142,8 +133,8 @@ class ProjectPageTest extends TestCase
                     'status',
                     'issuerName',
                     'created_at',
-                ]
-            ]
+                ],
+            ],
         ]);
     }
 
@@ -154,7 +145,7 @@ class ProjectPageTest extends TestCase
 
         $project = $contribution->project;
         $user = $project->owner;
-        $response = $this->get('api/projects/' . $project->id . '/contributions');
+        $response = $this->get('api/projects/'.$project->id.'/contributions');
         $response->assertStatus(200);
 
         $response->assertJsonStructure([
@@ -164,23 +155,19 @@ class ProjectPageTest extends TestCase
                     'title',
                     'status',
                     'contributorName',
-                ]
-            ]
+                ],
+            ],
         ]);
     }
-
-
-
 
     //test_get_project_comments
     public function test_get_project_comments()
     {
-
         $comment = Comment::where('commentedType', 'project')->first();
         $project = Project::find($comment->commented_id);
         $user = $project->owner;
 
-        $response = $this->get('api/projects/' . $project->id . '/comments');
+        $response = $this->get('api/projects/'.$project->id.'/comments');
         $response->assertStatus(200);
 
         $response->assertJsonStructure([
@@ -194,9 +181,9 @@ class ProjectPageTest extends TestCase
                         'commenterUsername',
                         'user_id',
                         'created_at',
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
 
         ]);
     }
@@ -207,7 +194,7 @@ class ProjectPageTest extends TestCase
 
         $project = $contribution->project;
         $user = $project->owner;
-        $response = $this->get('api/projects/' . $project->id . '/contributors');
+        $response = $this->get('api/projects/'.$project->id.'/contributors');
         $response->assertStatus(200);
 
         $response->assertJsonStructure([
@@ -219,22 +206,8 @@ class ProjectPageTest extends TestCase
                     'bio',
                     'created_at',
                     'updated_at',
-                ]
-            ]
+                ],
+            ],
         ]);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

@@ -6,14 +6,11 @@ use App\Models\Contribution;
 use App\Models\Project;
 use App\Models\Specialty;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\MigrateFreshSeedOnce;
 use Tests\TestCase;
 
 class UserTest extends TestCase
 {
-
     use MigrateFreshSeedOnce;
 
     //TODO: test get latest users and most contributors and most projects and all users (name, username, projectsCount, IssuesCount, contributionsCount)
@@ -34,8 +31,8 @@ class UserTest extends TestCase
                     'projectsCount',
                     'issuesCount',
                     'contributionsCount',
-                ]
-            ]
+                ],
+            ],
         ]);
     }
 
@@ -55,8 +52,8 @@ class UserTest extends TestCase
                     'projectsCount',
                     'issuesCount',
                     'contributionsCount',
-                ]
-            ]
+                ],
+            ],
         ]);
     }
 
@@ -76,8 +73,8 @@ class UserTest extends TestCase
                     'projectsCount',
                     'issuesCount',
                     'contributionsCount',
-                ]
-            ]
+                ],
+            ],
         ]);
     }
 
@@ -85,9 +82,9 @@ class UserTest extends TestCase
     {
         $user = User::factory()->create(['name' => 'user']);
         $this->actingAs($user);
-        $response = $this->json('PUT', '/api/users' , [
+        $response = $this->json('PUT', '/api/users', [
             'bio' => 'Test Bio',
-            'specialtiesIds' => [1,2],
+            'specialtiesIds' => [1, 2],
             'username' => 'Test Username',
             'name' => 'Test Name',
         ]);
@@ -106,7 +103,7 @@ class UserTest extends TestCase
 
         $user = User::factory()->create(['name' => 'user']);
         $this->actingAs($user);
-        $response = $this->get('/api/users/' . $user->username);
+        $response = $this->get('/api/users/'.$user->username);
         $response->assertStatus(200);
 
         $response->assertJsonStructure([
@@ -115,7 +112,6 @@ class UserTest extends TestCase
             'username',
             'bio',
         ]);
-
     }
 
     public function test_get_user_specialties()
@@ -124,7 +120,7 @@ class UserTest extends TestCase
         $specs = Specialty::factory(10)->create(['name' => 'specialty']);
         $user->specialties()->attach($specs->pluck('id'));
         $this->actingAs($user);
-        $response = $this->get('/api/users/' . $user->username . '/specialties');
+        $response = $this->get('/api/users/'.$user->username.'/specialties');
         $response->assertStatus(200);
 
         $response->assertJsonStructure([
@@ -132,10 +128,9 @@ class UserTest extends TestCase
                 '*' => [
                     'id',
                     'name',
-                ]
-            ]
+                ],
+            ],
         ]);
-
     }
 
     public function test_get_user_projects()
@@ -143,7 +138,7 @@ class UserTest extends TestCase
         $user = User::factory()->create(['name' => 'user']);
         Project::factory(10)->create(['owner_id' => $user->id]);
         $this->actingAs($user);
-        $response = $this->get('/api/users/' . $user->username . '/projects');
+        $response = $this->get('/api/users/'.$user->username.'/projects');
         $response->assertStatus(200);
 
         $response->assertJsonStructure([
@@ -154,8 +149,8 @@ class UserTest extends TestCase
                     'description',
                     'contributionsCount',
                     'issuesCount',
-                ]
-            ]
+                ],
+            ],
         ]);
     }
 
@@ -164,7 +159,7 @@ class UserTest extends TestCase
         $user = User::factory()->create(['name' => 'user']);
         Contribution::factory(15)->create(['contributor_id' => $user->id]);
         $this->actingAs($user);
-        $response = $this->get('/api/users/' . $user->username . '/contributions');
+        $response = $this->get('/api/users/'.$user->username.'/contributions');
         $response->assertStatus(200);
 
         $response->assertJsonStructure([
@@ -175,10 +170,8 @@ class UserTest extends TestCase
                     'description',
                     'projectName',
                     'project_id',
-                ]
-            ]
+                ],
+            ],
         ]);
-
     }
-
 }

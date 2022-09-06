@@ -4,16 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Issue;
 use App\Models\Project;
-use App\Models\User;
-use Illuminate\Http\Request;
 
 class IssueController extends Controller
 {
     public function create($user, $title, $description, $project_id)
     {
-
         $project = Project::find($project_id);
-
 
         $issue = $project->issues()->create([
             'title' => $title,
@@ -27,37 +23,38 @@ class IssueController extends Controller
         return $issue;
     }
 
-    public function update($user, $status, $issue_id )
+    public function update($user, $status, $issue_id)
     {
-
         $issue = Issue::find($issue_id);
 
         if ($user->cannot('update', $issue)) {
-           abort(403);
-       }
+            abort(403);
+        }
 
-       $issue->status = $status;
-       $issue->save();
+        $issue->status = $status;
+        $issue->save();
 
-       return $issue;
-
-    }
-
-    public function getIssue($issue_id){
-        $issue = Issue::find($issue_id);
-        $issue->issuerName = $issue->user->name;
         return $issue;
     }
 
-    public function getComments($issue_id){
+    public function getIssue($issue_id)
+    {
         $issue = Issue::find($issue_id);
-        $issue->comments =$issue->comments()->paginate(10)->through(function ($comment) {
+        $issue->issuerName = $issue->user->name;
+
+        return $issue;
+    }
+
+    public function getComments($issue_id)
+    {
+        $issue = Issue::find($issue_id);
+        $issue->comments = $issue->comments()->paginate(10)->through(function ($comment) {
             $comment->commenterName = $comment->user->name;
             $comment->commenterUsername = $comment->user->username;
+
             return $comment;
         });
 
         return $issue;
     }
-
 }

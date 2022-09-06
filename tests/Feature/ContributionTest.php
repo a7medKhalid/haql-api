@@ -6,7 +6,6 @@ use App\Models\Comment;
 use App\Models\Contribution;
 use App\Models\Project;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\MigrateFreshSeedOnce;
 use Tests\TestCase;
 
@@ -14,7 +13,8 @@ class ContributionTest extends TestCase
 {
     use MigrateFreshSeedOnce;
 
-    public function testCreateContribution(){
+    public function testCreateContribution()
+    {
         $user = User::factory()->create(['name' => 'ContributionMaker']);
 
         $projectOwner = User::factory()->create(['name' => 'ProjectOwner']);
@@ -23,7 +23,7 @@ class ContributionTest extends TestCase
             'name' => 'Test Project',
             'owner_id' => $projectOwner->id,
 
-            ]);
+        ]);
 
         $response = $this->actingAs($user)->post('api/contributions', [
             'title' => 'ContributionTitle',
@@ -41,13 +41,14 @@ class ContributionTest extends TestCase
         ]);
     }
 
-    public function testOwnerCanNotUpdateContribution(){
-       $user = User::where('name', 'ContributionMaker')->first();
+    public function testOwnerCanNotUpdateContribution()
+    {
+        $user = User::where('name', 'ContributionMaker')->first();
 
-       $contribution = Contribution::where('title', 'ContributionTitle')->first();
+        $contribution = Contribution::where('title', 'ContributionTitle')->first();
 
-        $response = $this->actingAs($user)->put('api/contributions/',[
-        'contribution_id' => $contribution->id,
+        $response = $this->actingAs($user)->put('api/contributions/', [
+            'contribution_id' => $contribution->id,
             'status' => 'accepted',
         ]);
 
@@ -59,17 +60,17 @@ class ContributionTest extends TestCase
             'link' => 'ContributionLink',
             'status' => 'open',
         ]);
-
     }
 
-    public function testProjectOwnerCanUpdateContribution(){
+    public function testProjectOwnerCanUpdateContribution()
+    {
         $user = User::where('name', 'ProjectOwner')->first();
 
         $contribution = Contribution::where('title', 'ContributionTitle')->first();
 
-        $response = $this->actingAs($user)->put('api/contributions/',[
-        'contribution_id' => $contribution->id,
-            'status' => 'accepted'
+        $response = $this->actingAs($user)->put('api/contributions/', [
+            'contribution_id' => $contribution->id,
+            'status' => 'accepted',
         ]);
 
         $response->assertStatus(200);
@@ -82,13 +83,14 @@ class ContributionTest extends TestCase
         ]);
     }
 
-    public function testCanNotDeleteAcceptedContribution(){
+    public function testCanNotDeleteAcceptedContribution()
+    {
         $user = User::where('name', 'ContributionMaker')->first();
 
         $contribution = Contribution::where('title', 'ContributionTitle')->first();
 
-        $response = $this->actingAs($user)->delete('api/contributions/',[
-        'contribution_id' => $contribution->id,
+        $response = $this->actingAs($user)->delete('api/contributions/', [
+            'contribution_id' => $contribution->id,
         ]);
 
         $response->assertStatus(403);
@@ -101,7 +103,8 @@ class ContributionTest extends TestCase
         ]);
     }
 
-    public function testDeleteContribution(){
+    public function testDeleteContribution()
+    {
         $user = User::factory()->create(['name' => 'ContributionMaker']);
         $project = Project::factory()->create([
             'name' => 'ContributionProject',
@@ -113,7 +116,7 @@ class ContributionTest extends TestCase
             'project_id' => $project->id,
             'contributor_id' => $user->id,
         ]);
-        $response = $this->actingAs($user)->delete('api/contributions/',[
+        $response = $this->actingAs($user)->delete('api/contributions/', [
             'contribution_id' => $contribution->id,
         ]);
         $response->assertStatus(200);
@@ -122,12 +125,11 @@ class ContributionTest extends TestCase
             'description' => 'ContributionDescription',
             'link' => 'ContributionLink',
         ]);
-
-
     }
 
     //test get contribution by id (title, description, link, status, project_id, contributor_id, contributor_name, created_at, )
-    public function testGetContributionById(){
+    public function testGetContributionById()
+    {
         $user = User::factory()->create(['name' => 'ContributionMaker']);
         $project = Project::factory()->create([
             'name' => 'ContributionProject',
@@ -160,7 +162,8 @@ class ContributionTest extends TestCase
     }
 
     //test get contribution comments (id, title, body, commenterName, commenterUsername, user_id, created_at)
-    public function test_get_contribution_comments(){
+    public function test_get_contribution_comments()
+    {
         $user = User::factory()->create(['name' => 'ContributionMaker']);
         $project = Project::factory()->create([
             'name' => 'ContributionProject',
@@ -179,7 +182,6 @@ class ContributionTest extends TestCase
         ]);
         $contribution->comments()->saveMany($comments);
 
-
         $response = $this->actingAs($user)->get('api/contributions/'.$contribution->id.'/comments');
 
         $response->assertStatus(200);
@@ -194,12 +196,10 @@ class ContributionTest extends TestCase
                         'commenterUsername',
                         'user_id',
                         'created_at',
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
 
         ]);
     }
-
-
 }

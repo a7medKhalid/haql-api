@@ -21,7 +21,7 @@ return new class extends Migration
             $table->text('description');
 
             $table->foreignId('owner_id')->nullable();
-         });
+        });
     }
 
     /**

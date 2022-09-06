@@ -10,7 +10,6 @@ class TaskPolicy
 {
     use HandlesAuthorization;
 
-
     public function update(User $user, Task $task)
     {
         return $user->id === $task->goal->project->owner_id;

@@ -7,8 +7,6 @@ use App\Models\Project;
 use App\Models\Specialty;
 use App\Models\Task;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\MigrateFreshSeedOnce;
 use Tests\TestCase;
 
@@ -59,13 +57,14 @@ class TaskTest extends TestCase
         ]);
     }
 
-    public function test_update_task(){
+    public function test_update_task()
+    {
         $user = User::where('name', 'taskMaker')->first();
 
         $this->actingAs($user);
 
         $task = Task::where('title', 'Test Task')->first();
-        $response = $this->json('PUT', '/api/tasks/' , [
+        $response = $this->json('PUT', '/api/tasks/', [
             'isCompleted' => true,
             'task_id' => $task->id,
         ]);
@@ -81,17 +80,15 @@ class TaskTest extends TestCase
             'title' => 'Test Task',
             'isCompleted' => true,
         ]);
-
-
     }
 
-
-    public function test_delete_task(){
+    public function test_delete_task()
+    {
         $user = User::where('name', 'taskMaker')->first();
 
         $this->actingAs($user);
         $task = Task::where('title', 'Test Task')->first();
-        $response = $this->json('DELETE', '/api/tasks/' , [
+        $response = $this->json('DELETE', '/api/tasks/', [
             'task_id' => $task->id,
         ]);
         $response->assertStatus(200);

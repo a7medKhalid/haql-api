@@ -4,13 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Goal;
 use App\Models\Task;
-use App\Models\User;
-use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
-    public function create($user, $goal_id, $title , $specialtiesIds){
-
+    public function create($user, $goal_id, $title, $specialtiesIds)
+    {
         $goal = Goal::find($goal_id);
 
         if ($user->cannot('update', $goal)) {
@@ -20,8 +18,6 @@ class TaskController extends Controller
             'title' => $title,
         ]);
 
-
-
         $s = $task->specialties()->attach($specialtiesIds);
 
         $task->save();
@@ -29,8 +25,8 @@ class TaskController extends Controller
         return $task;
     }
 
-    public function update($user, $task_id, $isCompleted){
-
+    public function update($user, $task_id, $isCompleted)
+    {
         $task = Task::find($task_id);
 
         if ($user->cannot('update', $task)) {
@@ -44,8 +40,8 @@ class TaskController extends Controller
         return $task;
     }
 
-    public function delete($user, $task_id){
-
+    public function delete($user, $task_id)
+    {
         $task = Task::find($task_id);
 
         if ($user->cannot('delete', $task)) {
@@ -57,13 +53,12 @@ class TaskController extends Controller
         return $task;
     }
 
-
-    public function getTask($task_id){
+    public function getTask($task_id)
+    {
         $task = Task::find($task_id);
         $specialties = $task->specialties()->get();
         $task->specialties = $specialties;
+
         return $task;
     }
-
-
 }

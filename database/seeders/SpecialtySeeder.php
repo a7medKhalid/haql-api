@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Specialty;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class SpecialtySeeder extends Seeder
@@ -25,7 +24,5 @@ class SpecialtySeeder extends Seeder
             //attach specialty to user
             $user->specialties()->attach($specialty);
         }
-
-
     }
 }

@@ -3,31 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
-use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-
 
 class ProjectController extends Controller
 {
-
-    public function getProjects(){
+    public function getProjects()
+    {
         $projects = Project::latest()->paginate(10)->through(function ($project) {
-
             $contributionsCount = $project->contributions()->count();
             $issuesCount = $project->issues()->count();
 
             $project->contributionsCount = $contributionsCount;
             $project->issuesCount = $issuesCount;
             $project->ownerUsername = $project->owner->username;
+
             return $project;
-        });;
+        });
+
         return $projects;
     }
 
-    public function getPersonalProjects($user){
+    public function getPersonalProjects($user)
+    {
         $projects = $user->projects()->paginate(10)->through(function ($project) {
-
             $contributionsCount = $project->contributions()->count();
             $issuesCount = $project->issues()->count();
 
@@ -36,14 +33,15 @@ class ProjectController extends Controller
 
             return $project;
         });
+
         return $projects;
     }
 
-    public function getTrendingProjects(){
+    public function getTrendingProjects()
+    {
 
         //get all projects sorted by child contributions count
         $projects = Project::withCount('contributions')->orderBy('contributions_count', 'desc')->paginate(10)->through(function ($project) {
-
             $contributionsCount = $project->contributions()->count();
             $issuesCount = $project->issues()->count();
 
@@ -52,7 +50,8 @@ class ProjectController extends Controller
             $project->ownerUsername = $project->owner->username;
 
             return $project;
-        });;
+        });
+
         return $projects;
     }
 
@@ -62,44 +61,51 @@ class ProjectController extends Controller
 //        return $projects;
 //    }
 
-
-
-    public function getProject($project_id){
+    public function getProject($project_id)
+    {
         $project = Project::find($project_id);
+
         return $project;
     }
 
-    public function getProjectGoals($project_id){
+    public function getProjectGoals($project_id)
+    {
         $project = Project::find($project_id);
         $goals = $project->goals()->paginate(10)->through(function ($goal) {
             $goal->tasks = $goal->tasks()->get();
+
             return $goal;
         });
+
         return $goals;
     }
 
-    public function getProjectIssues($project_id){
+    public function getProjectIssues($project_id)
+    {
         $project = Project::find($project_id);
         $issues = $project->issues()->paginate(10)->through(function ($issue) {
             $issue->issuerName = $issue->user->name;
+
             return $issue;
         });
+
         return $issues;
     }
 
-    public function getProjectContributions($project_id, $status = null){
-
-
+    public function getProjectContributions($project_id, $status = null)
+    {
         $project = Project::find($project_id);
 
-        if ($status == null){
+        if ($status == null) {
             $contributions = $project->contributions()->paginate(10)->through(function ($contribution) {
                 $contribution->contributorName = $contribution->contributor->name;
+
                 return $contribution;
             });
-        }else{
+        } else {
             $contributions = $project->contributions()->where('status', $status)->paginate(10)->through(function ($contribution) {
                 $contribution->contributorName = $contribution->contributor->name;
+
                 return $contribution;
             });
         }
@@ -107,29 +113,33 @@ class ProjectController extends Controller
         return $contributions;
     }
 
-    public function getProjectComments($project_id){
-
+    public function getProjectComments($project_id)
+    {
         $project = Project::find($project_id);
         $project->comments = $project->comments()->paginate(10)->through(function ($comment) {
             $comment->commenterName = $comment->user->name;
             $comment->commenterUsername = $comment->user->username;
+
             return $comment;
         });
 
         return $project;
     }
 
-    public function getProjectContributors($project_id){
+    public function getProjectContributors($project_id)
+    {
         $project = Project::find($project_id);
         $contributors = $project->contributors()->paginate(10)->through(function ($contributor) {
             $contributor->contributionsCount = $contributor->contributions()->count();
+
             return $contributor;
         });
+
         return $contributors;
     }
 
-    public function create($user, $name, $description){
-
+    public function create($user, $name, $description)
+    {
         $project = Project::create([
             'name' => $name,
             'description' => $description,
@@ -138,11 +148,10 @@ class ProjectController extends Controller
         $user->projects()->save($project);
 
         return $project;
-
     }
 
-    public function update($user, $project_id, $name = null, $description = null){
-
+    public function update($user, $project_id, $name = null, $description = null)
+    {
         $project = Project::find($project_id);
 
         if ($user->cannot('update', $project)) {
@@ -154,13 +163,11 @@ class ProjectController extends Controller
             'description' => $description,
         ]);
 
-
         return $project;
-
     }
 
-    public function delete($user, $project_id){
-
+    public function delete($user, $project_id)
+    {
         $project = Project::find($project_id);
 
         if ($user->cannot('delete', $project)) {
@@ -169,15 +176,12 @@ class ProjectController extends Controller
 
         //if project has contributions, abort
 
-        if ($project->contributions()->count() > 0){
+        if ($project->contributions()->count() > 0) {
             abort(403, 'You cannot delete a project that has contributions.');
         }
 
         $project->delete();
 
         return $project;
-
     }
-
-
 }

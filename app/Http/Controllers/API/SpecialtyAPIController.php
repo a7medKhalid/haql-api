@@ -8,8 +8,8 @@ use Illuminate\Http\Request;
 
 class SpecialtyAPIController extends Controller
 {
-    public function createSpecialty(Request $request){
-
+    public function createSpecialty(Request $request)
+    {
         $request->validate([
             'name' => 'required|string',
         ]);
@@ -17,8 +17,7 @@ class SpecialtyAPIController extends Controller
         $specialty_controller = new SpecialtyController;
 
         $specialty = $specialty_controller->create($request->name);
+
         return $specialty;
     }
-
-
 }

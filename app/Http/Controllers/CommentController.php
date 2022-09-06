@@ -3,12 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
-use App\Models\User;
-use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
-    public function create($user, $title, $body ,$commentedType, $commented_id)
+    public function create($user, $title, $body, $commentedType, $commented_id)
     {
         $comment = new Comment();
         $comment->title = $title;
@@ -23,7 +21,6 @@ class CommentController extends Controller
 
     public function update($user, $comment_id, $title, $body)
     {
-
         $comment = Comment::find($comment_id);
 
         if ($user->cannot('update', $comment)) {
@@ -39,7 +36,6 @@ class CommentController extends Controller
 
     public function delete($user, $comment_id)
     {
-
         $comment = Comment::find($comment_id);
 
         if ($user->cannot('delete', $comment)) {
@@ -51,10 +47,11 @@ class CommentController extends Controller
         return $comment;
     }
 
-    public function getComment($comment_id){
+    public function getComment($comment_id)
+    {
         $comment = Comment::find($comment_id);
         $comment->comments = $comment->comments()->get();
+
         return $comment;
     }
-
 }

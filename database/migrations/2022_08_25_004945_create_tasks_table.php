@@ -21,7 +21,6 @@ return new class extends Migration
             $table->boolean('isCompleted')->default(false);
 
             $table->foreignId('goal_id')->nullable();
-
         });
     }
 

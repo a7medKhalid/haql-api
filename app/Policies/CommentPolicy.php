@@ -10,7 +10,6 @@ class CommentPolicy
 {
     use HandlesAuthorization;
 
-
     public function update(User $user, Comment $comment)
     {
         return $user->id === $comment->user_id;
@@ -20,6 +19,4 @@ class CommentPolicy
     {
         return $user->id === $comment->user_id;
     }
-
-
 }

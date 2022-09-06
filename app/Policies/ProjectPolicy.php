@@ -10,7 +10,6 @@ class ProjectPolicy
 {
     use HandlesAuthorization;
 
-
     public function update(User $user, Project $project)
     {
         return $user->id === $project->owner_id;
@@ -20,6 +19,4 @@ class ProjectPolicy
     {
         return $user->id === $project->owner_id;
     }
-
-
 }

@@ -4,12 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Contribution;
 use App\Models\Project;
-use App\Models\User;
-use Illuminate\Http\Request;
 
 class ContributionController extends Controller
 {
-    public function create($user, $project_id, $title, $description, $link,)
+    public function create($user, $project_id, $title, $description, $link)
     {
         $contribution = Contribution::create([
             'title' => $title,
@@ -39,12 +37,10 @@ class ContributionController extends Controller
         ]);
 
         return $contribution;
-
     }
 
     public function delete($user, $contribution_id)
     {
-
         $contribution = Contribution::find($contribution_id);
 
         if ($user->cannot('delete', $contribution)) {
@@ -56,22 +52,25 @@ class ContributionController extends Controller
         return $contribution;
     }
 
-    public function getContribution($contribution_id){
+    public function getContribution($contribution_id)
+    {
         $contribution = Contribution::find($contribution_id);
         $contribution->contributorName = $contribution->contributor->name;
+
         return $contribution;
     }
 
-    public function getComments($contribution_id){
+    public function getComments($contribution_id)
+    {
         $contribution = Contribution::find($contribution_id);
 
-        $contribution->comments =$contribution->comments()->paginate(10)->through(function ($comment) {
+        $contribution->comments = $contribution->comments()->paginate(10)->through(function ($comment) {
             $comment->commenterName = $comment->user->name;
             $comment->commenterUsername = $comment->user->username;
+
             return $comment;
         });
 
         return $contribution;
     }
-
 }

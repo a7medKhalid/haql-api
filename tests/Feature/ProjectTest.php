@@ -4,8 +4,6 @@ namespace Tests\Feature;
 
 use App\Models\Project;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\MigrateFreshSeedOnce;
 use Tests\TestCase;
 
@@ -13,11 +11,8 @@ class ProjectTest extends TestCase
 {
     use MigrateFreshSeedOnce;
 
-
     public function testCreateProject()
     {
-
-
         $user = User::factory()->create(['name' => 'projectMaker']);
 
         $this->actingAs($user);
@@ -49,7 +44,7 @@ class ProjectTest extends TestCase
 
         $project = Project::first();
 
-        $response = $this->json('PUT', '/api/projects/' , [
+        $response = $this->json('PUT', '/api/projects/', [
             'name' => 'Test Project Updated',
             'description' => 'Test Description Updated',
             'project_id' => $project->id,
@@ -75,7 +70,7 @@ class ProjectTest extends TestCase
 
         $project = Project::first();
 
-        $response = $this->json('PUT', '/api/projects/' , [
+        $response = $this->json('PUT', '/api/projects/', [
             'name' => 'Test Project Updated',
             'description' => 'Test Description Updated',
             'project_id' => $project->id,
@@ -103,7 +98,7 @@ class ProjectTest extends TestCase
 
         $project = Project::first();
 
-        $response = $this->json('DELETE', '/api/projects/' , [
+        $response = $this->json('DELETE', '/api/projects/', [
             'project_id' => $project->id,
         ]);
 
@@ -143,10 +138,4 @@ class ProjectTest extends TestCase
             'description' => 'Test Description Updated',
         ]);
     }
-
-
-
-
-
-
 }

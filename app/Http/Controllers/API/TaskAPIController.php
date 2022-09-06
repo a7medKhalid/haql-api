@@ -9,9 +9,8 @@ use Illuminate\Support\Facades\Auth;
 
 class TaskAPIController extends Controller
 {
-
-    public function createTask(Request $request){
-
+    public function createTask(Request $request)
+    {
         $request->validate([
             'goal_id' => 'required|integer',
             'title' => 'required|string',
@@ -27,8 +26,8 @@ class TaskAPIController extends Controller
         return $task;
     }
 
-    public function updateTask(Request $request){
-
+    public function updateTask(Request $request)
+    {
         $request->validate([
             'task_id' => 'required|integer',
             'isCompleted' => 'required|boolean',
@@ -42,8 +41,8 @@ class TaskAPIController extends Controller
         return $task;
     }
 
-    public function deleteTask(Request $request){
-
+    public function deleteTask(Request $request)
+    {
         $request->validate([
             'task_id' => 'required|integer',
         ]);
@@ -56,7 +55,8 @@ class TaskAPIController extends Controller
         return $task;
     }
 
-    public function getTask(Request $request){
+    public function getTask(Request $request)
+    {
         $request->validate([
             'task_id' => 'required|integer',
         ]);
@@ -68,7 +68,4 @@ class TaskAPIController extends Controller
 
         return $tasks;
     }
-
-
-
 }

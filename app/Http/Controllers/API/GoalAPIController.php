@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Auth;
 
 class GoalAPIController extends Controller
 {
-    public function createGoal(Request $request){
-
+    public function createGoal(Request $request)
+    {
         $request->validate([
             'project_id' => 'required|integer',
             'title' => 'required|string',
@@ -26,8 +26,8 @@ class GoalAPIController extends Controller
         return $goal;
     }
 
-    public function updateGoalStatus(Request $request){
-
+    public function updateGoalStatus(Request $request)
+    {
         $request->validate([
             'goal_id' => 'required|integer',
             'isCompleted' => 'required|boolean',
@@ -41,9 +41,8 @@ class GoalAPIController extends Controller
         return $goal;
     }
 
-
-    public function deleteGoal(Request $request){
-
+    public function deleteGoal(Request $request)
+    {
         $request->validate([
             'goal_id' => 'required|integer',
         ]);
@@ -57,17 +56,14 @@ class GoalAPIController extends Controller
         return $goal;
     }
 
+    public function getGoal(Request $request, $goal_id)
+    {
+        $user = Auth::user();
 
-    public function getGoal(Request $request, $goal_id){
+        $goals_controller = new GoalController;
 
-            $user = Auth::user();
+        $goal = $goals_controller->getGoal($goal_id);
 
-            $goals_controller = new GoalController;
-
-            $goal = $goals_controller->getGoal($goal_id);
-
-            return $goal;
+        return $goal;
     }
-
-
 }

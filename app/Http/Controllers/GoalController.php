@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Goal;
 use App\Models\Project;
-use App\Models\User;
-use Illuminate\Http\Request;
 
 class GoalController extends Controller
 {
@@ -14,7 +12,7 @@ class GoalController extends Controller
         $project = Project::find($project_id);
 
         if ($user->cannot('update', $project)) {
-           abort(403);
+            abort(403);
         }
 
         $goal = $project->goals()->create([
@@ -27,7 +25,6 @@ class GoalController extends Controller
 
     public function update($user, $goal_id, $isCompleted = null)
     {
-
         $goal = Goal::find($goal_id);
 
         if ($user->cannot('update', $goal)) {
@@ -43,7 +40,6 @@ class GoalController extends Controller
 
     public function delete($user, $goal_id)
     {
-
         $goal = Goal::find($goal_id);
 
         if ($user->cannot('delete', $goal)) {
@@ -55,8 +51,8 @@ class GoalController extends Controller
         return $goal;
     }
 
-    public function getGoal($goal_id){
-
+    public function getGoal($goal_id)
+    {
         $goal = Goal::where('id', $goal_id)->first();
         $tasks = $goal->tasks()->get();
 
@@ -64,8 +60,4 @@ class GoalController extends Controller
 
         return $goal;
     }
-
-
-
-
 }

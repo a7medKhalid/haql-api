@@ -44,7 +44,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-
     //many to many relationship with specialties
     public function specialties()
     {
@@ -74,8 +73,4 @@ class User extends Authenticatable
     {
         return $this->hasMany(Comment::class, 'user_id');
     }
-
-
-
-
 }

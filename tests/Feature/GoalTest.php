@@ -5,14 +5,11 @@ namespace Tests\Feature;
 use App\Models\Goal;
 use App\Models\Project;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\MigrateFreshSeedOnce;
 use Tests\TestCase;
 
 class GoalTest extends TestCase
 {
-
     use MigrateFreshSeedOnce;
 
     public function test_create_goal()
@@ -42,14 +39,15 @@ class GoalTest extends TestCase
         ]);
     }
 
-    public function test_update_goal(){
-        $user = User::where('name' , 'goalMaker')->first();
+    public function test_update_goal()
+    {
+        $user = User::where('name', 'goalMaker')->first();
 
         $this->actingAs($user);
 
-        $goal = Goal::where('title' , 'Test Goal')->first();
+        $goal = Goal::where('title', 'Test Goal')->first();
 
-        $response = $this->json('PUT', '/api/goals/' , [
+        $response = $this->json('PUT', '/api/goals/', [
             'isCompleted' => true,
 
             'goal_id' => $goal->id,
@@ -70,14 +68,15 @@ class GoalTest extends TestCase
         ]);
     }
 
-    public function test_delete_goal(){
-        $user = User::where('name' , 'goalMaker')->first();
+    public function test_delete_goal()
+    {
+        $user = User::where('name', 'goalMaker')->first();
 
         $this->actingAs($user);
 
-        $goal = Goal::where('title' , 'Test Goal')->first();
+        $goal = Goal::where('title', 'Test Goal')->first();
 
-        $response = $this->json('DELETE', '/api/goals/' , [
+        $response = $this->json('DELETE', '/api/goals/', [
             'goal_id' => $goal->id,
         ]);
 
@@ -102,7 +101,7 @@ class GoalTest extends TestCase
 
         $goal = Goal::first();
 
-        $response = $this->get('api/goals/' . $goal->id);
+        $response = $this->get('api/goals/'.$goal->id);
 
         $response->assertStatus(200);
     }
@@ -122,6 +121,4 @@ class GoalTest extends TestCase
 //
 //        $response->assertStatus(200);
 //    }
-
-
 }

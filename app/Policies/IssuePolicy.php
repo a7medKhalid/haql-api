@@ -10,10 +10,8 @@ class IssuePolicy
 {
     use HandlesAuthorization;
 
-
     public function update(User $user, Issue $issue)
     {
         return $user->id === $issue->project->owner_id;
     }
-
 }

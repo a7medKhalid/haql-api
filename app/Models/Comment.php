@@ -22,10 +22,4 @@ class Comment extends Model
     {
         return $this->hasMany(Comment::class, 'commented_id')->where('commentedType', 'comment');
     }
-
-
-
-
-
-
 }

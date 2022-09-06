@@ -10,7 +10,6 @@ class ContributionPolicy
 {
     use HandlesAuthorization;
 
-
     public function delete(User $user, Contribution $contribution)
     {
         if ($contribution->status != 'open') {
@@ -24,5 +23,4 @@ class ContributionPolicy
     {
         return $user->id === $contribution->project->owner_id;
     }
-
 }
