@@ -92,6 +92,18 @@ class ProjectController extends Controller
         return $issues;
     }
 
+    public function getProjectTrendingIssues($project_id)
+    {
+        $project = Project::find($project_id);
+        $issues = $project->issues()->withCount('comments')->orderBy('comments_count', 'desc')->paginate(10)->through(function ($issue) {
+            $issue->issuerName = $issue->user->name;
+
+            return $issue;
+        });
+
+        return $issues;
+    }
+
     public function getProjectContributions($project_id, $status = null)
     {
         $project = Project::find($project_id);

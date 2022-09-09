@@ -75,6 +75,11 @@ Route::group(['prefix' => 'comments'], function () {
     Route::delete('/', [CommentsAPIController::class, 'deleteComment'])->middleware('auth:sanctum');
 });
 
+
+
+
+
+
 //web pages routes
 
 //permissions route
@@ -145,6 +150,7 @@ Route::group(['prefix' => 'projects'], function () {
     Route::get('{project_id}', [ProjectAPIController::class, 'getProject']); //
     Route::get('{project_id}/goals', [ProjectAPIController::class, 'getProjectGoals']); //
     Route::get('{project_id}/issues', [ProjectAPIController::class, 'getProjectIssues']); //
+    Route::get('{project_id}/issues/trending', [ProjectAPIController::class, 'getProjectTrendingIssues']); //
     Route::get('{project_id}/contributions', [ProjectAPIController::class, 'getProjectContributions']); //
     Route::get('{project_id}/comments', [ProjectAPIController::class, 'getProjectComments']); //
     Route::get('{project_id}/contributors', [ProjectAPIController::class, 'getProjectContributors']); //

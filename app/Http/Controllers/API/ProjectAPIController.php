@@ -67,6 +67,14 @@ class ProjectAPIController extends Controller
         return response()->json($issues);
     }
 
+    public function getProjectTrendingIssues(Request $request, $project_id)
+    {
+        $projects_controller = new ProjectController;
+        $issues = $projects_controller->getProjectTrendingIssues($project_id);
+
+        return response()->json($issues);
+    }
+
     public function getProjectContributions(Request $request, $project_id)
     {
         $request->validate([

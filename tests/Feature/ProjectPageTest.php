@@ -138,6 +138,29 @@ class ProjectPageTest extends TestCase
         ]);
     }
 
+    //test_get_project_trending_issues
+    public function test_get_project_trending_issues()
+    {
+        $issue = Issue::first();
+
+        $project = $issue->project;
+        $user = $project->owner;
+        $response = $this->get('api/projects/'.$project->id.'/issues/trending');
+        $response->assertStatus(200);
+
+        $response->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'id',
+                    'title',
+                    'status',
+                    'issuerName',
+                    'created_at',
+                ],
+            ],
+        ]);
+    }
+
     //test_get_project_contributions
     public function test_get_project_contributions()
     {
