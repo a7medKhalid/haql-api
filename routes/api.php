@@ -8,6 +8,7 @@ use App\Http\Controllers\API\ProjectAPIController;
 use App\Http\Controllers\API\SpecialtyAPIController;
 use App\Http\Controllers\API\TaskAPIController;
 use App\Http\Controllers\API\UserAPIController;
+use App\Models\Comment;
 use App\Models\Contribution;
 use App\Models\Goal;
 use App\Models\Issue;
@@ -85,7 +86,7 @@ Route::group(['prefix' => 'comments'], function () {
 //permissions route
 Route::get('/permissions', function (Request $request) {
     $request->validate([
-        'model' => ['required', Rule::in(['project', 'goal', 'task', 'issue', 'contribution'])],
+        'model' => ['required', Rule::in(['project', 'goal', 'task', 'issue', 'contribution', 'comment'])],
         'model_id' => ['required', 'integer'],
 
         'permission' => ['required', Rule::In(['create', 'update', 'delete'])],
@@ -104,6 +105,9 @@ Route::get('/permissions', function (Request $request) {
         $model = Issue::find($model_id);
     } elseif ($model === 'contribution') {
         $model = Contribution::find($model_id);
+    }
+    elseif ($model === 'comment') {
+        $model = Comment::find($model_id);
     }
 
     $user = $request->user();
