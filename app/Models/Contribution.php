@@ -11,6 +11,11 @@ class Contribution extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d',
+        'updated_at' => 'datetime:Y-m-d',
+    ];
+
     public function project()
     {
         return $this->belongsTo(Project::class, 'project_id');

@@ -11,6 +11,11 @@ class Comment extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d',
+        'updated_at' => 'datetime:Y-m-d',
+    ];
+
     //comment belongs to a user
     public function user()
     {

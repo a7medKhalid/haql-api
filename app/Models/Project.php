@@ -11,6 +11,11 @@ class Project extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d',
+        'updated_at' => 'datetime:Y-m-d',
+    ];
+
     public function owner()
     {
         return $this->belongsTo(User::class, 'owner_id');
@@ -36,8 +41,10 @@ class Project extends Model
         return $this->hasMany(Comment::class, 'commented_id')->where('commentedType', 'project');
     }
 
+
     public function contributors()
     {
         return $this->belongsToMany(User::class, 'contributions', 'project_id', 'contributor_id');
     }
+
 }

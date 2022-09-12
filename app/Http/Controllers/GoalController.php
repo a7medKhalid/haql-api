@@ -35,6 +35,13 @@ class GoalController extends Controller
             'isCompleted' => $isCompleted,
         ]);
 
+       if ($isCompleted) {
+           //update all tasks of this goal
+           $goal->tasks()->update([
+               'isCompleted' => true,
+           ]);
+        }
+
         return $goal;
     }
 

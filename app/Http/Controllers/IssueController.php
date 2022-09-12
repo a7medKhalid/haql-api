@@ -52,6 +52,9 @@ class IssueController extends Controller
             $comment->commenterName = $comment->user->name;
             $comment->commenterUsername = $comment->user->username;
 
+            $comment->replysCount = $comment->comments()->count();
+
+
             return $comment;
         });
 

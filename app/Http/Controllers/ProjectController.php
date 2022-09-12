@@ -132,6 +132,8 @@ class ProjectController extends Controller
             $comment->commenterName = $comment->user->name;
             $comment->commenterUsername = $comment->user->username;
 
+            $comment->replysCount = $comment->comments()->count();
+
             return $comment;
         });
 
@@ -141,8 +143,17 @@ class ProjectController extends Controller
     public function getProjectContributors($project_id)
     {
         $project = Project::find($project_id);
-        $contributors = $project->contributors()->paginate(10)->through(function ($contributor) {
-            $contributor->contributionsCount = $contributor->contributions()->count();
+
+        //use distinct to remove duplicates
+        $contributors = $project->contributions()->distinct()->paginate(10)->through(function ($contribution) {
+            $contribution->contributorName = $contribution->contributor->name;
+            $contribution->contributorUsername = $contribution->contributor->username;
+
+            return $contribution;
+        });
+        $contributors = $project->contributors()->distinct()->paginate(10)->through(function ($contributor) use ($project_id) {
+
+            $contributor->contributionsCount = $contributor->contributions()->where('project_id', $project_id )->count();
 
             return $contributor;
         });

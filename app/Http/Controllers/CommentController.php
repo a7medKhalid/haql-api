@@ -50,7 +50,19 @@ class CommentController extends Controller
     public function getComment($comment_id)
     {
         $comment = Comment::find($comment_id);
-        $comment->comments = $comment->comments()->get();
+
+        $comment->commenterName = $comment->user->name;
+        $comment->commenterUsername = $comment->user->username;
+        $comment->replysCount = $comment->comments()->count();
+
+        $comment->comments = $comment->comments()->paginate(10)->through(function ($comment) {
+            $comment->commenterName = $comment->user->name;
+            $comment->commenterUsername = $comment->user->username;
+
+            $comment->replysCount = $comment->comments()->count();
+
+            return $comment;
+        });
 
         return $comment;
     }
