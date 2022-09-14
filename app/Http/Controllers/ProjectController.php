@@ -71,7 +71,8 @@ class ProjectController extends Controller
     public function getProjectGoals($project_id)
     {
         $project = Project::find($project_id);
-        $goals = $project->goals()->paginate(10)->through(function ($goal) {
+        //Todo: use through without pagination
+        $goals = $project->goals()->paginate(100)->through(function ($goal) {
             $goal->tasks = $goal->tasks()->get();
 
             return $goal;
