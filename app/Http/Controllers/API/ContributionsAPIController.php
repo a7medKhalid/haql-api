@@ -95,4 +95,15 @@ class ContributionsAPIController extends Controller
 
         return response()->json($contribution);
     }
+
+    public function getContributionFiles(Request $request, $contribution_id)
+    {
+        $user = Auth::user();
+
+        $contributions_controller = new ContributionController;
+
+        $filePath = $contributions_controller->getFiles($contribution_id);
+
+        return response()->download($filePath)->deleteFileAfterSend();
+    }
 }

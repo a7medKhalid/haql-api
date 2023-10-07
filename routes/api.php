@@ -48,6 +48,7 @@ Route::group(['prefix' => 'contributions'], function () {
     Route::put('/', [ContributionsAPIController::class, 'updateContributionStatus'])->middleware('auth:sanctum');
     Route::delete('/', [ContributionsAPIController::class, 'deleteContribution'])->middleware('auth:sanctum');
     Route::post('/files', [ContributionsAPIController::class, 'uploadContributionFiles'])->middleware('auth:sanctum');
+    Route::get('{contribution_id}/files', [ContributionsAPIController::class, 'getContributionFiles']);
 });
 
 Route::group(['prefix' => 'issues'], function () {
@@ -159,6 +160,8 @@ Route::group(['prefix' => 'projects'], function () {
     Route::get('{project_id}/contributions', [ProjectAPIController::class, 'getProjectContributions']); //
     Route::get('{project_id}/comments', [ProjectAPIController::class, 'getProjectComments']); //
     Route::get('{project_id}/contributors', [ProjectAPIController::class, 'getProjectContributors']); //
+
+    Route::get('{project_id}/files', [ProjectAPIController::class, 'getProjectFiles']);
 });
 
 Route::group(['prefix' => 'goals'], function () {

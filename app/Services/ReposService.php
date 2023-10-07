@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use ZipArchive;
 
 class ReposService
 {
@@ -89,6 +90,37 @@ class ReposService
         Log::write("debug", "cd $this->full_path && git merge $branch_name");
 
         //later return if conflict
+
+    }
+
+    public function download($branch_name){
+        //download branch
+        shell_exec("cd $this->full_path && git checkout $branch_name");
+        Log::write("debug", "cd $this->full_path && git checkout $branch_name");
+
+        // Define the zip file name and path
+        $zipFileName = $branch_name . '.zip';
+        $zipFilePath = storage_path($zipFileName);
+
+        // Create a new Zip Archive instance
+        $zip = new ZipArchive;
+        if ($zip->open($zipFilePath, ZipArchive::CREATE) === TRUE) {
+            $files = Storage::allFiles($this->directory);
+
+            foreach ($files as $file) {
+                // Add each file to the zip
+                Log::write("debug", $file);
+                Log::write("debug", "hello");
+
+                $zip->addFile(Storage::path($file), $file);
+            }
+
+            // Close the zip archive
+            $zip->close();
+        }
+
+        // Return the zip file
+        return $zipFilePath;
 
     }
 

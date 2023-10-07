@@ -217,4 +217,16 @@ class ProjectController extends Controller
 
         return $project;
     }
+
+    public function getFiles($project_id)
+    {
+        $project = Project::find($project_id);
+
+        $ReposService = new ReposService($project->directory);
+
+        $filesPath = $ReposService->download('master');
+
+        return $filesPath;
+
+    }
 }

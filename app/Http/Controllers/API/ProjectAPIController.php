@@ -146,4 +146,12 @@ class ProjectAPIController extends Controller
 
         return response()->json($project);
     }
+
+    public function getProjectFiles(Request $request, $project_id)
+    {
+        $projects_controller = new ProjectController;
+        $filesPath = $projects_controller->getFiles($project_id);
+
+        return response()->download($filesPath)->deleteFileAfterSend();
+    }
 }

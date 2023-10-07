@@ -103,4 +103,17 @@ class ContributionController extends Controller
 
         return $contribution;
     }
+
+    public function getFiles($contribution_id)
+    {
+        $contribution = Contribution::find($contribution_id);
+
+        $project = $contribution->project;
+
+        $repos_service = new ReposService($project->directory);
+
+        $files = $repos_service->download($contribution->id);
+
+        return $files;
+    }
 }
