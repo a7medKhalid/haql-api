@@ -96,7 +96,7 @@ class ReposService
     public function download($branch_name){
         //download branch
         shell_exec("cd $this->full_path && git checkout $branch_name");
-        Log::write("debug", "cd $this->full_path && git checkout $branch_name");
+//        Log::write("debug", "cd $this->full_path && git checkout $branch_name");
 
         // Define the zip file name and path
         $zipFileName = $branch_name . '.zip';
@@ -107,10 +107,27 @@ class ReposService
         if ($zip->open($zipFilePath, ZipArchive::CREATE) === TRUE) {
             $files = Storage::allFiles($this->directory);
 
+            //exclude hidden files
             foreach ($files as $file) {
-                // Add each file to the zip
-                Log::write("debug", $file);
-                Log::write("debug", "hello");
+
+                // Check if any part of the path starts with a dot
+                $parts = explode('/', $file);
+                $containsHiddenSegment = false;
+
+                foreach ($parts as $part) {
+                    if (strpos($part, '.') === 0) {
+                        $containsHiddenSegment = true;
+                        break;
+                    }
+                }
+
+                if ($containsHiddenSegment) {
+                    continue; // Skip the file
+                }
+
+//                // Add each file to the zip
+//                Log::write("debug", $file);
+//                Log::write("debug", "hello");
 
                 $zip->addFile(Storage::path($file), $file);
             }
