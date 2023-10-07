@@ -202,4 +202,37 @@ class ContributionTest extends TestCase
 
         ]);
     }
+
+    public function test_upload_files()
+    {
+        $user = User::factory()->create(['name' => 'ContributionMaker']);
+        $project = Project::factory()->create([
+            'name' => 'ContributionProject',
+        ]);
+        $contribution = Contribution::factory()->create([
+            'title' => 'ContributionTitle ToGet',
+            'description' => 'ContributionDescription',
+            'link' => 'ContributionLink',
+            'project_id' => $project->id,
+            'contributor_id' => $user->id,
+        ]);
+        $response = $this->actingAs($user)->post('api/contributions/files', [
+            'contribution_id' => $contribution->id,
+            'files' => [
+                'file1',
+                'file2',
+            ],
+        ]);
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('files', [
+            'fileable_id' => $contribution->id,
+            'fileable_type' => 'contribution',
+            'name' => 'file1',
+        ]);
+        $this->assertDatabaseHas('files', [
+            'fileable_id' => $contribution->id,
+            'fileable_type' => 'contribution',
+            'name' => 'file2',
+        ]);
+    }
 }

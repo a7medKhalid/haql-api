@@ -16,15 +16,30 @@ class ContributionsAPIController extends Controller
             'project_id' => 'required|integer',
             'title' => 'required|string',
             'description' => 'required|string',
-            'link' => 'required|string',
-
+            'files' => 'required|array',
         ]);
 
         $user = Auth::user();
 
         $contributions_controller = new ContributionController;
 
-        $contribution = $contributions_controller->create($user, $request->project_id, $request->title, $request->description, $request->link);
+        $contribution = $contributions_controller->create($user, $request->project_id, $request->title, $request->description, $request->file('files'));
+
+        return response()->json($contribution);
+    }
+
+    public function uploadContributionFiles(Request $request)
+    {
+        $request->validate([
+            'contribution_id' => 'required|integer',
+            'files' => 'required',
+        ]);
+
+        $user = Auth::user();
+
+        $contributions_controller = new ContributionController;
+
+        $contribution = $contributions_controller->uploadFiles($user, $request->contribution_id, $request->file('files'));
 
         return response()->json($contribution);
     }

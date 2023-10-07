@@ -19,7 +19,7 @@ return new class extends Migration
 
             $table->string('title');
             $table->text('description');
-            $table->string('link');
+            $table->string('commit_name')->nullable();
             $table->enum('status', ['open', 'accepted', 'rejected', 'archived'])->default('open');
 
             $table->foreignId('contributor_id')->nullable();

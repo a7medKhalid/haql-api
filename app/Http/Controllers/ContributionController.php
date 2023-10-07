@@ -4,22 +4,40 @@ namespace App\Http\Controllers;
 
 use App\Models\Contribution;
 use App\Models\Project;
+use App\Services\ReposService;
+use Illuminate\Support\Facades\Log;
 
 class ContributionController extends Controller
 {
-    public function create($user, $project_id, $title, $description, $link)
+    public function create($user, $project_id, $title, $description, $files)
     {
         $contribution = Contribution::create([
             'title' => $title,
             'description' => $description,
-            'link' => $link,
-
         ]);
 
         $project = Project::find($project_id);
 
         $project->contributions()->save($contribution);
         $user->contributions()->save($contribution);
+
+        $repos_service = new ReposService($project->directory);
+        $repos_service->uploadFiles($contribution->id, $files);
+
+        return $contribution;
+    }
+
+    public function uploadFiles($contribution_id, $files)
+    {
+        $contribution = Contribution::find($contribution_id);
+
+        $project = $contribution->project;
+
+
+        $repos_service = new ReposService($project->directory);
+
+        $repos_service->uploadFiles($contribution, $files);
+
 
         return $contribution;
     }
@@ -30,6 +48,14 @@ class ContributionController extends Controller
 
         if ($user->cannot('update', $contribution)) {
             abort(403, 'You are not authorized to perform this action.');
+        }
+
+        if ($status == 'accepted' ) {
+            $project = $contribution->project;
+
+            $repos_service = new ReposService($project->directory);
+
+            $repos_service->merge($contribution->title);
         }
 
         $contribution->update([

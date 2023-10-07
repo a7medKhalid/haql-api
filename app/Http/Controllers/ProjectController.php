@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Services\ReposService;
 
 class ProjectController extends Controller
 {
@@ -170,6 +171,14 @@ class ProjectController extends Controller
         ]);
 
         $user->projects()->save($project);
+
+        $project->directory = $project->id;
+
+        $project->save();
+
+        $ReposService = new ReposService($project->id);
+
+        $ReposService->create();
 
         return $project;
     }

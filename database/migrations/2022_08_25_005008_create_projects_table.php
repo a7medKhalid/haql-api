@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('name');
             $table->text('description');
 
+            $table->string('directory')->nullable();
+
             $table->foreignId('owner_id')->nullable();
         });
     }

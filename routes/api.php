@@ -47,6 +47,7 @@ Route::group(['prefix' => 'contributions'], function () {
     Route::post('/', [ContributionsAPIController::class, 'createContribution'])->middleware('auth:sanctum');
     Route::put('/', [ContributionsAPIController::class, 'updateContributionStatus'])->middleware('auth:sanctum');
     Route::delete('/', [ContributionsAPIController::class, 'deleteContribution'])->middleware('auth:sanctum');
+    Route::post('/files', [ContributionsAPIController::class, 'uploadContributionFiles'])->middleware('auth:sanctum');
 });
 
 Route::group(['prefix' => 'issues'], function () {
