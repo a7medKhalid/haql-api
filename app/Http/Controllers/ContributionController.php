@@ -55,7 +55,9 @@ class ContributionController extends Controller
 
             $repos_service = new ReposService($project->directory);
 
-            $repos_service->merge($contribution->title);
+            $repos_service->merge($contribution->id);
+
+            Log::write("debug", "merged");
         }
 
         $contribution->update([

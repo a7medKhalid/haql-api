@@ -85,7 +85,8 @@ class ReposService
 
     public function merge($branch_name){
         //merge branch to master
-        eval("cd $this->full_path && git merge $branch_name");
+        shell_exec("cd $this->full_path && git merge $branch_name");
+        Log::write("debug", "cd $this->full_path && git merge $branch_name");
 
         //later return if conflict
 
