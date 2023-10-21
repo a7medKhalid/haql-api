@@ -136,6 +136,9 @@ class ReposService
             $zip->close();
         }
 
+        //return to master
+        shell_exec("cd $this->full_path && git checkout master");
+
         // Return the zip file
         return $zipFilePath;
 
